@@ -481,7 +481,11 @@ export default function AutismAICompanion() {
             </div>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight">{t(lang, 'header_title')}</h1>
-              <p className="text-xs text-zinc-500 -mt-1">{t(lang, 'header_subtitle')}</p>
+              <p className="text-xs text-zinc-500 -mt-1 flex items-center gap-1">
+                {t(lang, 'header_subtitle')} 
+                <span className="text-lg">🦕</span> 
+                <span className="font-medium text-emerald-600">Рэкс-Исследователь • Флаги: 47/195</span>
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-sm">
@@ -868,9 +872,10 @@ export default function AutismAICompanion() {
                 <h3 className="font-semibold mb-3 text-lg">Ваш план на сегодня</h3>
                 <div className="grid gap-4 md:grid-cols-2">
                   {dailyPlan.map(act => (
-                    <div key={act.id} className="bg-white dark:bg-zinc-900 border rounded-2xl p-4 text-sm">
-                      <div className="font-medium">{act.title}</div>
+                    <div key={act.id} className="bg-white dark:bg-zinc-900 border rounded-2xl p-4 text-sm border-l-4 border-[var(--theme-accent)]">
+                      <div className="font-medium flex items-center gap-2">🇺🇳 {act.title}</div>
                       <div className="text-xs text-emerald-600 mt-1">{act.duration} • {act.category}</div>
+                      <div className="text-[10px] text-zinc-500 mt-1">Цель: освоить флаг/страну как Рэкс!</div>
                       <button onClick={() => addRehabToTracker(act)} className="mt-2 text-xs px-3 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 rounded">Добавить в трекер</button>
                     </div>
                   ))}
@@ -895,13 +900,13 @@ export default function AutismAICompanion() {
             {/* Activities Grid */}
             <div className="grid md:grid-cols-2 gap-5">
               {filteredRehab.map(activity => (
-                <div key={activity.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 flex flex-col">
+                <div key={activity.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 flex flex-col border-l-4" style={{borderLeftColor: 'var(--theme-accent)'}}>
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg leading-tight">{activity.title}</h3>
+                    <h3 className="font-semibold text-lg leading-tight">🇺🇳 {activity.title}</h3>
                     <span className="text-xs px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 rounded-full whitespace-nowrap ml-2">{activity.duration}</span>
                   </div>
 
-                  <div className="text-xs text-emerald-600 mb-3">{rehabCategories.find(c => c.key === activity.category)?.label}</div>
+                  <div className="text-xs text-emerald-600 mb-3 flex items-center gap-1">{rehabCategories.find(c => c.key === activity.category)?.label} <span className="text-base">🗺️</span></div>
 
                   <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-3">{activity.description}</p>
 
@@ -919,7 +924,7 @@ export default function AutismAICompanion() {
 
                   {/* Visual / Picture section - "с картинками" */}
                   <div className="mb-4 p-3 bg-zinc-50 dark:bg-zinc-950 border rounded-2xl">
-                    <div className="text-xs font-medium mb-1 flex items-center gap-1">🖼️ Визуал для картинки (скопируй и сгенерируй изображение):</div>
+                    <div className="text-xs font-medium mb-1 flex items-center gap-1">🖼️ Визуал для картинки (флаги + карта + Рэкс; скопируй и сгенерируй изображение):</div>
                     <div className="text-xs text-zinc-600 dark:text-zinc-400 italic leading-snug">{activity.visualDescription}</div>
                     <div className="text-[10px] mt-1 text-emerald-600">Используйте Flux, Midjourney, Leonardo или любой генератор. Распечатайте для мотивации ребенка.</div>
                   </div>
@@ -959,7 +964,7 @@ export default function AutismAICompanion() {
               <div className="fixed inset-0 bg-white z-[100] overflow-auto p-8 printable-rehab no-print">
                 <div className="max-w-[210mm] mx-auto"> {/* A4 width approx */}
                   <div className="flex justify-between items-center mb-6 no-print">
-                    <h1 className="text-2xl font-bold">{t(lang, 'tab_rehab')} — Printable / PDF Template</h1>
+                    <h1 className="text-2xl font-bold flex items-center gap-2">{t(lang, 'tab_rehab')} — Printable / PDF Template <span className="text-3xl">🇺🇳🗺️</span></h1>
                     <div>
                       <button onClick={() => window.print()} className="px-4 py-2 bg-blue-600 text-white rounded mr-2">Print / Save as PDF</button>
                       <button onClick={() => setShowPrintableRehab(false)} className="px-4 py-2 border rounded">Close</button>
@@ -979,7 +984,7 @@ export default function AutismAICompanion() {
                           <em>Цель:</em> {act.description}<br />
                           <strong>Шаги:</strong> {act.steps.join(' ')}<br />
                           <strong>Материалы:</strong> {act.materials}<br />
-                          <div className="visual-placeholder my-2 text-center text-xs"> [Вставьте здесь сгенерированную картинку по описанию: {act.visualDescription}] </div>
+                          <div className="visual-placeholder my-2 text-center text-xs border-dashed border-2 border-[var(--theme-accent)]"> [Вставьте здесь сгенерированную картинку: Рэкс + флаг страны + карта мира. {act.visualDescription}] </div>
                           <em>Советы:</em> {act.tips}
                         </div>
                       ))}

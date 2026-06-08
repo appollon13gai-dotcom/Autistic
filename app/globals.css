@@ -6,6 +6,12 @@
   --card: #ffffff;
   --border: #e4e4e7;
   --primary: #18181b;
+  /* Geography/Flags theme - calm indigo + silver + accent red for flags */
+  --theme-primary: #1E3A8A; /* deep indigo */
+  --theme-secondary: #64748B; /* slate/silver */
+  --theme-accent: #DC2626; /* flag red */
+  --theme-bg: #F0F9FF; /* light blue */
+  --theme-card: #FFFFFF;
 }
 
 .dark {
@@ -14,6 +20,12 @@
   --card: #18181b;
   --border: #27272a;
   --primary: #f4f4f5;
+  /* Darker geography theme */
+  --theme-primary: #1E40AF;
+  --theme-secondary: #475569;
+  --theme-accent: #EF4444;
+  --theme-bg: #0F172A;
+  --theme-card: #1E2937;
 }
 
 body {
