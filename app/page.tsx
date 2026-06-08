@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { MapPin, MessageCircle, BookOpen, TrendingUp, ClipboardList, AlertTriangle, Send, RefreshCw } from 'lucide-react';
+import { MapPin, MessageCircle, BookOpen, TrendingUp, ClipboardList, AlertTriangle, Send, RefreshCw, Play, Users, Target } from 'lucide-react';
 import { toast } from 'sonner';
 import { resources, globalKnowledge, getResourcesForLocation, defaultLocation, type Resource, type GlobalKnowledge } from '@/lib/data';
+import { rehabActivities, rehabCategories, getActivitiesByCategory, generateDailyPlan, rehabIntro, type RehabActivity } from '@/lib/rehab-program';
 
 // === TYPES ===
 interface ChatMessage {
@@ -42,7 +43,7 @@ export default function AutismAICompanion() {
     {
       id: 1,
       role: 'ai',
-      content: `Hola. Soy tu asistente IA para apoyo a familias con autismo (sospecha de TEA). Estoy configurado inicialmente para **Blanes (Girona, Cataluña, España)**, pero puedes cambiar la ubicación en cualquier momento (ideal si te mudas frecuentemente como refugiado).\n\nPuedo ayudarte con:\n• Recursos locales y en España\n• Base de conocimiento global (prácticas basadas en evidencia)\n• Ideas de actividades diarias para un niño de 5 años\n• Resúmenes de tendencias e intervenciones\n\n**IMPORTANTE (léelo siempre):** Esto es información general y apoyo práctico. NO sustituye diagnóstico, tratamiento médico ni consejo profesional. Consulta siempre con Atención Temprana, pediatras, psicólogos o especialistas. Los datos deben verificarse ya que cambian.`,
+      content: `Hola. Soy tu asistente IA para apoyo a familias con autismo (sospecha de TEA). Estoy configurado inicialmente para **Blanes (Girona, Cataluña, España)**, pero puedes cambiar la ubicación en cualquier momento (ideal si te mudas frecuentemente como refugiado).\n\nPuedo ayudarte con:\n• Recursos locales y en España\n• Base de conocimiento global (prácticas basadas en evidencia)\n• Ideas de actividades diarias para un niño de 5 años\n• Полноценная онлайн-программа реабилитации ("Спортзал навыков" с упражнениями, шагами и описаниями для картинок)\n• Resúmenes de tendencias e intervenciones\n\n**IMPORTANTE (léelo siempre):** Esto es información general y apoyo práctico. NO sustituye diagnóstico, tratamiento médico ni consejo profesional. Consulta siempre con Atención Temprana, pediatras, psicólogos o especialistas. Los datos deben verificarse ya que cambian.`,
       timestamp: new Date()
     }
   ]);
@@ -59,8 +60,12 @@ export default function AutismAICompanion() {
   const [attachments, setAttachments] = useState<Array<{id: number; name: string; type: 'image' | 'file'; url: string}>>([]);
   const [isListening, setIsListening] = useState(false);
 
+  // Rehab program state
+  const [rehabCategory, setRehabCategory] = useState<'all' | 'sensory' | 'communication' | 'social-play' | 'motor' | 'self-care' | 'cognitive'>('all');
+  const [dailyPlan, setDailyPlan] = useState<RehabActivity[]>([]);
+
   // Active tab
-  const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker'>('chat');
+  const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('chat');
 
   // Update filtered resources when location changes
   useEffect(() => {
@@ -327,6 +332,31 @@ export default function AutismAICompanion() {
     });
   };
 
+  // === REHAB PROGRAM HELPERS ===
+  const filteredRehab = rehabCategory === 'all' 
+    ? rehabActivities 
+    : getActivitiesByCategory(rehabCategory);
+
+  const generateAndSetDailyPlan = () => {
+    const plan = generateDailyPlan(5);
+    setDailyPlan(plan);
+    toast.success('Сгенерирован план на сегодня! 5 упражнений как в спортзале.');
+  };
+
+  const addRehabToTracker = (activity: RehabActivity) => {
+    const note = `Выполнено: ${activity.title} (${activity.duration}). Цель: ${activity.description}`;
+    setTrackerNotes(prev => prev ? `${prev}\n${note}` : note);
+    toast.success(`Добавлено в трекер: ${activity.title}. Заполните детали и сохраните.`);
+    setActiveTab('tracker'); // Switch to tracker
+  };
+
+  const askAIAboutActivity = (activity: RehabActivity) => {
+    const prompt = `Расскажи подробнее про упражнение "${activity.title}" для моего 5-летнего сына с подозрением на аутизм в Бланесе. Как адаптировать, сколько раз в неделю, и что делать если ребенок не хочет.`;
+    setChatInput(prompt);
+    setActiveTab('chat');
+    toast.info('Переключено в чат. Нажмите отправить, чтобы спросить ИИ.');
+  };
+
   // Update send to clear attachments after sending
   // (We'll handle in the send function below)
 
@@ -425,6 +455,7 @@ export default function AutismAICompanion() {
             { id: 'resources' as const, label: 'Recursos locales', icon: MapPin },
             { id: 'knowledge' as const, label: 'Base global + Tendencias', icon: BookOpen },
             { id: 'tracker' as const, label: 'Seguimiento diario', icon: ClipboardList },
+            { id: 'rehab' as const, label: 'Программа реабилитации (Спортзал)', icon: Target },
           ].map(tab => (
             <button
               key={tab.id}
@@ -660,6 +691,144 @@ export default function AutismAICompanion() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* === REHAB PROGRAM (NEW: Онлайн "Спортзал" для реабилитации) === */}
+        {activeTab === 'rehab' && (
+          <div className="max-w-5xl">
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold flex items-center gap-3 mb-2">
+                <Target className="w-7 h-7 text-emerald-600" /> 
+                Онлайн-программа реабилитации (Домашний "Спортзал навыков" для TEA)
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Структура как в специализированных центрах: разные "упражнения" (игры и занятия), с описаниями, шагами и готовыми описаниями для картинок.
+              </p>
+            </div>
+
+            {/* Strong Disclaimer */}
+            <div className="disclaimer rounded-2xl p-5 mb-8 text-sm leading-relaxed">
+              <div className="flex gap-3">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong>КРИТИЧЕСКИ ВАЖНО — ПРОЧИТАЙТЕ ПЕРЕД ИСПОЛЬЗОВАНИЕМ:</strong><br />
+                  Эта программа — обобщение доказательных практик из реальных центров (ESDM, TEACCH, NCAEP 28 практик, сенсорная интеграция, логопедия и т.д.). 
+                  Она <strong>НЕ ЗАМЕНЯЕТ</strong> профессиональную помощь, индивидуальную программу или консультацию специалистов. 
+                  В Испании (Бланес/Жирона) обязательно обращайтесь в <strong>Atención Temprana</strong> через ваш CAP и в Fundació Junts Autisme. 
+                  Начинайте с 10-15 минут, наблюдайте за ребенком. Если что-то вызывает стресс — остановитесь. 
+                  Адаптируйте под вашего сына. Всегда консультируйтесь с врачами и терапевтами. Данные из публичных источников и могут меняться.
+                </div>
+              </div>
+            </div>
+
+            {/* Intro */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 mb-6 text-sm leading-relaxed">
+              <div className="whitespace-pre-wrap">{rehabIntro}</div>
+              <p className="mt-3 text-xs text-zinc-500">Источники: NCAEP, ASAT, CDC, ESDM, TEACCH, Autismo España, Junts Autisme и практики европейских/американских центров раннего вмешательства.</p>
+            </div>
+
+            {/* Daily Plan Generator */}
+            <div className="mb-6 flex flex-wrap gap-4 items-center">
+              <button 
+                onClick={generateAndSetDailyPlan}
+                className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-medium transition-colors"
+              >
+                <Play className="w-5 h-5" /> Сгенерировать план на сегодня (5 упражнений)
+              </button>
+              <span className="text-sm text-zinc-500">Как в спортзале: разминка + основные навыки + игра.</span>
+            </div>
+
+            {dailyPlan.length > 0 && (
+              <div className="mb-8">
+                <h3 className="font-semibold mb-3 text-lg">Ваш план на сегодня</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {dailyPlan.map(act => (
+                    <div key={act.id} className="bg-white dark:bg-zinc-900 border rounded-2xl p-4 text-sm">
+                      <div className="font-medium">{act.title}</div>
+                      <div className="text-xs text-emerald-600 mt-1">{act.duration} • {act.category}</div>
+                      <button onClick={() => addRehabToTracker(act)} className="mt-2 text-xs px-3 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 rounded">Добавить в трекер</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              <button onClick={() => setRehabCategory('all')} className={`px-4 py-1.5 rounded-full text-sm border ${rehabCategory === 'all' ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}>Все</button>
+              {rehabCategories.map(cat => (
+                <button 
+                  key={cat.key} 
+                  onClick={() => setRehabCategory(cat.key as any)}
+                  className={`px-4 py-1.5 rounded-full text-sm border flex items-center gap-1 ${rehabCategory === cat.key ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}
+                >
+                  <span>{cat.icon}</span> {cat.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Activities Grid */}
+            <div className="grid md:grid-cols-2 gap-5">
+              {filteredRehab.map(activity => (
+                <div key={activity.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-lg leading-tight">{activity.title}</h3>
+                    <span className="text-xs px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 rounded-full whitespace-nowrap ml-2">{activity.duration}</span>
+                  </div>
+
+                  <div className="text-xs text-emerald-600 mb-3">{rehabCategories.find(c => c.key === activity.category)?.label}</div>
+
+                  <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-3">{activity.description}</p>
+
+                  <div className="mb-3">
+                    <div className="text-xs font-medium mb-1">Материалы:</div>
+                    <div className="text-sm">{activity.materials}</div>
+                  </div>
+
+                  <div className="mb-3">
+                    <div className="text-xs font-medium mb-1">Как делать (шаги):</div>
+                    <ol className="text-sm list-decimal pl-4 space-y-0.5">
+                      {activity.steps.map((step, idx) => <li key={idx}>{step}</li>)}
+                    </ol>
+                  </div>
+
+                  {/* Visual / Picture section - "с картинками" */}
+                  <div className="mb-4 p-3 bg-zinc-50 dark:bg-zinc-950 border rounded-2xl">
+                    <div className="text-xs font-medium mb-1 flex items-center gap-1">🖼️ Визуал для картинки (скопируй и сгенерируй изображение):</div>
+                    <div className="text-xs text-zinc-600 dark:text-zinc-400 italic leading-snug">{activity.visualDescription}</div>
+                    <div className="text-[10px] mt-1 text-emerald-600">Используйте Flux, Midjourney, Leonardo или любой генератор. Распечатайте для мотивации ребенка.</div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="text-xs font-medium mb-1">Советы:</div>
+                    <div className="text-sm text-zinc-600 dark:text-zinc-400">{activity.tips}</div>
+                  </div>
+
+                  <div className="text-[10px] text-zinc-500 mb-3">Основа: {activity.evidence}</div>
+
+                  <div className="mt-auto flex gap-2">
+                    <button 
+                      onClick={() => addRehabToTracker(activity)}
+                      className="flex-1 px-4 py-2 text-sm rounded-2xl border border-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors"
+                    >
+                      Добавить в дневник
+                    </button>
+                    <button 
+                      onClick={() => askAIAboutActivity(activity)}
+                      className="flex-1 px-4 py-2 text-sm rounded-2xl bg-zinc-900 text-white hover:bg-black transition-colors"
+                    >
+                      Спросить ИИ
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-xs text-zinc-500 dark:text-zinc-400">
+              Программа собрана из практик реальных центров. Для Бланеса комбинируйте с местными службами (Atención Temprana, Junts Autisme). 
+              Регулярность важнее идеальности. Отслеживайте прогресс в трекере и делитесь фото с ИИ для идей.
+            </div>
           </div>
         )}
 

@@ -59,6 +59,38 @@ La primera pantalla te permite cambiar la ubicación (ej. "Blanes", "Girona", "B
 ## Recordatorio humano
 Como pediste: empieza por Blanes pero con flexibilidad total de ubicación. El agente y los recursos se adaptan cuando cambias el texto de "Ubicación actual".
 
+## Nueva función: Programa de rehabilitación online ("Gimnasio de habilidades" TEA)
+
+He recopilado toda la información disponible basada en evidencia sobre rehabilitación de niños de 5 años con sospecha de autismo (TEA) de fuentes líderes y prácticas de centros especializados en todo el mundo (EE.UU., Europa, incluyendo España).
+
+**Estructura como en un gimnasio / centro de rehabilitación real:**
+- Diferentes "ejercicios" (juegos, actividades, ejercicios) por categorías: regulación sensorial, comunicación, interacción social y juego, motricidad, autocuidado, habilidades cognitivas.
+- Para cada uno: nombre, descripción del objetivo, instrucciones paso a paso, materiales (simples del hogar), tiempo, consejos.
+- **Con imágenes**: Cada ejercicio tiene una descripción visual detallada ("Картинка: ..."). Copia el texto y genera una imagen en cualquier generador de IA (Flux, Midjourney, Leonardo, etc.) para imprimir, motivar al niño o crear un horario visual.
+- Generador de "plan del día" (5 ejercicios como un entrenamiento completo).
+- Integración con el tracker y el chat de IA (botones "Añadir al diario" y "Preguntar a la IA").
+- Filtros por categorías.
+
+**Fuentes principales (evidence-based):**
+- NCAEP: 28 Evidence-Based Practices (ncaep.fpg.unc.edu) — naturalistic interventions, visual supports, prompting, parent-implemented, etc.
+- ASAT (asatonline.org) — revisiones científicas de tratamientos.
+- ESDM (Early Start Denver Model) — enfoque basado en juego naturalista.
+- TEACCH — enseñanza estructurada, horarios visuales.
+- CDC "Learn the Signs. Act Early.", prácticas de terapia ocupacional y del habla.
+- Recursos españoles/europeos: Autismo España, Fundació Junts Autisme, programas estatales de Atención Temprana.
+
+Es una adaptación de prácticas de centros especializados reales (juegos de atención conjunta, cajas sensoriales, circuitos de obstáculos, estilo PECS, imitación, historias sociales, etc.). Programa completo para uso en casa como complemento a la ayuda profesional.
+
+**Cómo usar online:**
+1. Abre la pestaña "Программа реабилитации (Спортзал)".
+2. Lee el disclaimer.
+3. Genera un plan para el día o elige por categorías.
+4. Para cada ejercicio copia el visual y genera una imagen.
+5. Realiza 20-40 min/día, registra en el tracker.
+6. Pregunta a la IA sobre adaptaciones para Blanes/tu hijo.
+
+**Aviso importante:** Este es un programa informativo basado en prácticas públicas basadas en evidencia. **NO sustituye** a especialistas. En Blanes/Girona contacta obligatoriamente con Atención Temprana (a través de tu CAP) y Fundació Junts Autisme. Empieza despacio, observa al niño. Consulta siempre con médicos y terapeutas.
+
 ¿Quieres que ahora:
 - Añada una ruta real de API para chat con LLM?
 - Integre n8n (ej. workflow de ejemplo)?
