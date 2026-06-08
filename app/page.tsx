@@ -155,8 +155,16 @@ export default function AutismAICompanion() {
   const [dailyPlan, setDailyPlan] = useState<RehabActivity[]>([]);
   const [showPrintableRehab, setShowPrintableRehab] = useState(false);
 
-  // Language state - default Russian as requested
-  const [lang, setLang] = useState<'ru' | 'en' | 'uk' | 'es'>('ru');
+  // Language state - default Russian as requested, persisted in localStorage
+  const [lang, setLang] = useState<'ru' | 'en' | 'uk' | 'es'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('appLang');
+      if (saved && ['ru', 'en', 'uk', 'es'].includes(saved)) {
+        return saved as 'ru' | 'en' | 'uk' | 'es';
+      }
+    }
+    return 'ru';
+  });
 
   // Active tab
   const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('chat');
@@ -179,6 +187,13 @@ export default function AutismAICompanion() {
       setTrackerEntries(JSON.parse(savedTracker));
     }
   }, []);
+
+  // Save language to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('appLang', lang);
+    }
+  }, [lang]);
 
   // Save location
   const updateLocation = () => {
