@@ -62,3 +62,42 @@ body {
     color: #fbbf24;
   }
 }
+
+/* Printable styles for Rehab Program PDF template */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-rehab, .printable-rehab * {
+    visibility: visible;
+  }
+  .printable-rehab {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .activity-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    padding: 8px;
+  }
+  .visual-placeholder {
+    border: 1px dashed #999;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9pt;
+    color: #666;
+    margin: 8px 0;
+  }
+}

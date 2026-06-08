@@ -28,6 +28,96 @@ interface TrackerEntry {
   challenges: string;
 }
 
+// Simple i18n - default Russian, switchable to EN, UK, ES
+const translations: Record<string, Record<string, string>> = {
+  ru: {
+    header_title: "Compás TEA AI",
+    header_subtitle: "Компас по аутизму (TEA) с ИИ • Гибкая локация • Голос + фото",
+    clear_data: "Очистить данные",
+    focused_label: "Фокус: Глобальные лучшие практики + Локальная помощь",
+    disclaimer_title: "ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ — ЧИТАЙТЕ КАЖДЫЙ РАЗ",
+    disclaimer_text: "Это приложение — инструмент общей информации, практической поддержки и организации для родителей. НЕ заменяет медицинскую диагностику, лечение, терапию или профессиональную консультацию. Аутизм требует оценки квалифицированных специалистов (педиатр, детский невролог, клинический психолог, логопед и др.). Ресурсы и рекомендации основаны на публичных источниках (NCAEP, ASAT, CDC, ESDM, TEACCH, Autismo España и др.) и всегда должны проверяться. Как семья беженцев, которая может часто переезжать, приложение позволяет вводить любую локацию. Действуйте параллельно, обращаясь в местные службы ранней помощи.",
+    location_label: "Текущая локация (меняйте при переезде)",
+    location_placeholder: "Например: Бланес, Жирона, Барселона, Мадрид или любой город",
+    save_location: "Сохранить локацию",
+    flexible_mode: "Гибкий режим",
+    tab_chat: "Агент ИИ",
+    tab_resources: "Локальные ресурсы",
+    tab_knowledge: "Глобальная база + Тренды",
+    tab_tracker: "Ежедневный трекер",
+    tab_rehab: "Глобальная программа реабилитации (Спортзал)",
+    generate_plan: "Сгенерировать план на сегодня (5 упражнений)",
+    printable_btn: "Printable Version / PDF Template",
+    all_categories: "Все",
+    // Add more as needed
+  },
+  en: {
+    header_title: "Compás TEA AI",
+    header_subtitle: "Autism (TEA) Compass with AI • Flexible location • Voice + photos",
+    clear_data: "Clear data",
+    focused_label: "Focus: Global best practices + Local support",
+    disclaimer_title: "IMPORTANT DISCLAIMER — READ EVERY TIME",
+    disclaimer_text: "This web app is a tool for general information, practical support, and organization for parents. It does NOT replace medical diagnosis, treatment, therapy, or professional advice. Autism requires evaluation by qualified specialists (pediatrician, child neurologist, clinical psychologist, speech therapist, etc.). Resources and recommendations are based on public sources (NCAEP, ASAT, CDC, ESDM, TEACCH, etc.) and must always be verified. As a refugee family that may move frequently, the app allows entering any location. Act in parallel by contacting local early intervention services.",
+    location_label: "Current location (change when you move)",
+    location_placeholder: "E.g.: Blanes, Girona, Barcelona, Madrid or any city",
+    save_location: "Save location",
+    flexible_mode: "Flexible mode",
+    tab_chat: "AI Agent",
+    tab_resources: "Local resources",
+    tab_knowledge: "Global knowledge + Trends",
+    tab_tracker: "Daily tracker",
+    tab_rehab: "Global Rehab Program (Skills Gym)",
+    generate_plan: "Generate today's plan (5 exercises)",
+    printable_btn: "Printable Version / PDF Template",
+    all_categories: "All",
+  },
+  uk: {
+    header_title: "Compás TEA AI",
+    header_subtitle: "Компас по аутизму (TEA) з ІІ • Гнучка локація • Голос + фото",
+    clear_data: "Очистити дані",
+    focused_label: "Фокус: Глобальні найкращі практики + Місцева допомога",
+    disclaimer_title: "ВАЖЛИВЕ ПОПЕРЕДЖЕННЯ — ЧИТАЙТЕ КОЖНОГО РАЗУ",
+    disclaimer_text: "Цей веб-додаток — інструмент загальної інформації, практичної підтримки та організації для батьків. НЕ замінює медичну діагностику, лікування, терапію чи професійну консультацію. Аутизм потребує оцінки кваліфікованих спеціалістів (педіатр, дитячий невролог, клінічний психолог, логопед тощо). Ресурси та рекомендації базуються на публічних джерелах (NCAEP, ASAT, CDC, ESDM, TEACCH тощо) і завжди мають перевірятися. Як сім'я біженців, яка може часто переїжджати, додаток дозволяє вводити будь-яку локацію. Дійте паралельно, звертаючись до місцевих служб ранньої допомоги.",
+    location_label: "Поточна локація (змінюйте при переїзді)",
+    location_placeholder: "Наприклад: Бланес, Жирона, Барселона, Мадрид або будь-яке місто",
+    save_location: "Зберегти локацію",
+    flexible_mode: "Гнучкий режим",
+    tab_chat: "Агент ШІ",
+    tab_resources: "Локальні ресурси",
+    tab_knowledge: "Глобальна база + Тренди",
+    tab_tracker: "Щоденний трекер",
+    tab_rehab: "Глобальна програма реабілітації (Спортзал)",
+    generate_plan: "Згенерувати план на сьогодні (5 вправ)",
+    printable_btn: "Printable Version / PDF Template",
+    all_categories: "Усі",
+  },
+  es: {
+    header_title: "Compás TEA AI",
+    header_subtitle: "Brújula TEA con IA • Ubicación flexible • Voz + fotos",
+    clear_data: "Borrar datos",
+    focused_label: "Enfoque: Mejores prácticas globales + Apoyo local",
+    disclaimer_title: "AVISO IMPORTANTE — LÉELO CADA VEZ QUE USES LA APP",
+    disclaimer_text: "Esta aplicación web es una herramienta de información general, apoyo práctico y organización para padres. NO sustituye diagnóstico médico, tratamiento, terapia ni consejo profesional. El autismo requiere evaluación por especialistas cualificados (pediatra, neurólogo infantil, psicólogo clínico, logopeda, etc.). Los recursos y recomendaciones se basan en fuentes públicas (NCAEP, ASAT, CDC, ESDM, TEACCH, etc.) y deben verificarse siempre. Como familia refugiada que puede mudarse frecuentemente, la app permite introducir cualquier ubicación. Actúa en paralelo contactando los servicios locales de atención temprana.",
+    location_label: "Ubicación actual (cámbiala cuando te mudes)",
+    location_placeholder: "Ej: Blanes, Girona, Barcelona, Madrid o cualquier ciudad",
+    save_location: "Guardar ubicación",
+    flexible_mode: "Modo flexible",
+    tab_chat: "Agente IA",
+    tab_resources: "Recursos locales",
+    tab_knowledge: "Base global + Tendencias",
+    tab_tracker: "Seguimiento diario",
+    tab_rehab: "Programa global de rehabilitación (Gimnasio de habilidades)",
+    generate_plan: "Generar plan de hoy (5 ejercicios)",
+    printable_btn: "Printable Version / PDF Template",
+    all_categories: "Todos",
+  },
+};
+
+// Helper to get translated string
+function t(lang: string, key: string): string {
+  return (translations[lang] && translations[lang][key]) || translations['ru'][key] || key;
+}
+
 // === MAIN WEB APPLICATION ===
 export default function AutismAICompanion() {
   // Location state - flexible for refugees who move often
@@ -43,7 +133,7 @@ export default function AutismAICompanion() {
     {
       id: 1,
       role: 'ai',
-      content: `Hola. Soy tu asistente IA para apoyo a familias con autismo (sospecha de TEA). Estoy configurado inicialmente para **Blanes (Girona, Cataluña, España)**, pero puedes cambiar la ubicación en cualquier momento (ideal si te mudas frecuentemente como refugiado).\n\nPuedo ayudarte con:\n• Recursos locales y en España\n• Base de conocimiento global (prácticas basadas en evidencia)\n• Ideas de actividades diarias para un niño de 5 años\n• Полноценная онлайн-программа реабилитации ("Спортзал навыков" с упражнениями, шагами и описаниями для картинок)\n• Resúmenes de tendencias e intervenciones\n\n**IMPORTANTE (léelo siempre):** Esto es información general y apoyo práctico. NO sustituye diagnóstico, tratamiento médico ni consejo profesional. Consulta siempre con Atención Temprana, pediatras, psicólogos o especialistas. Los datos deben verificarse ya que cambian.`,
+      content: `Привет! Я твой ИИ-ассистент по поддержке семей с аутизмом (подозрение на TEA). По умолчанию настроен на глобальные лучшие практики (ESDM, TEACCH, NCAEP и программы ведущих центров мира). Ты можешь ввести любую локацию (идеально для семей, которые часто переезжают).\n\nЯ могу помочь с:\n• Локальными ресурсами (включая Испанию)\n• Глобальной базой знаний (доказательные практики)\n• Идеями ежедневных занятий для ребенка 5 лет\n• Полноценной онлайн-программой реабилитации («Спортзал навыков» с упражнениями, шагами и описаниями для картинок)\n• Обзорами трендов и вмешательств\n\n**ВАЖНО (читай каждый раз):** Это общая информация и практическая поддержка. НЕ заменяет диагностику, лечение или консультацию специалистов. Аутизм требует оценки квалифицированных врачей. Ресурсы основаны на публичных источниках и всегда должны проверяться. Действуй параллельно, обращаясь в местные службы ранней помощи.`,
       timestamp: new Date()
     }
   ]);
@@ -63,6 +153,10 @@ export default function AutismAICompanion() {
   // Rehab program state
   const [rehabCategory, setRehabCategory] = useState<'all' | 'sensory' | 'communication' | 'social-play' | 'motor' | 'self-care' | 'cognitive'>('all');
   const [dailyPlan, setDailyPlan] = useState<RehabActivity[]>([]);
+  const [showPrintableRehab, setShowPrintableRehab] = useState(false);
+
+  // Language state - default Russian as requested
+  const [lang, setLang] = useState<'ru' | 'en' | 'uk' | 'es'>('ru');
 
   // Active tab
   const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('chat');
@@ -89,7 +183,7 @@ export default function AutismAICompanion() {
   // Save location
   const updateLocation = () => {
     if (!locationInput.trim()) {
-      toast.error('Por favor introduce una ubicación (ej: Blanes, Girona, o cualquier ciudad)');
+      toast.error('Пожалуйста, введите локацию (например: Бланес, Жирона или любой город)');
       return;
     }
     const newLoc = locationInput.trim();
@@ -97,7 +191,7 @@ export default function AutismAICompanion() {
     localStorage.setItem('autismCompanionLocation', newLoc);
     setIsLocationSet(true);
     setLocationInput('');
-    toast.success(`Ubicación actualizada a: ${newLoc}. Los recursos y el agente IA se adaptarán.`);
+    toast.success(`Локация обновлена: ${newLoc}. Ресурсы и агент ИИ адаптируются.`);
   };
 
   // Reset to flexible (for frequent moves)
@@ -246,18 +340,18 @@ export default function AutismAICompanion() {
     setTrackerSkills('');
     setTrackerChallenges('');
 
-    toast.success('Entrada guardada. Estos registros serán muy valiosos para los especialistas cuando tengas cita.');
+    toast.success('Запись сохранена. Эти заметки будут очень ценны для специалистов, когда у вас будет приём.');
   };
 
   // Clear all data (for privacy / new location)
   const clearAllData = () => {
-    if (!confirm('¿Borrar todos los datos locales (ubicación y tracker)? Esto no afecta al servidor.')) return;
+    if (!confirm('Очистить все локальные данные (локацию и трекер)? Это не затронет сервер.')) return;
     localStorage.removeItem('autismCompanionLocation');
     localStorage.removeItem('autismCompanionTracker');
     setCurrentLocation(defaultLocation);
     setTrackerEntries([]);
     setChatMessages([chatMessages[0]]); // Keep initial disclaimer
-    toast.success('Datos locales borrados. La app está lista para nueva ubicación.');
+    toast.success('Локальные данные очищены. Приложение готово к новой локации.');
   };
 
   // === NEW FEATURES: Voice dictation + File/Photo upload for AI chat ===
@@ -271,7 +365,7 @@ export default function AutismAICompanion() {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'ru-RU'; // Можно поменять на 'uk-UA' для украинского
+    recognition.lang = lang === 'ru' ? 'ru-RU' : lang === 'uk' ? 'uk-UA' : lang === 'es' ? 'es-ES' : 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
@@ -293,7 +387,8 @@ export default function AutismAICompanion() {
     try {
       recognition.start();
       setIsListening(true);
-      toast.info('Говорите... (на русском)');
+      const langLabel = lang === 'ru' ? 'русском' : lang === 'uk' ? 'українській' : lang === 'es' ? 'español' : 'English';
+      toast.info(`Говорите... (на ${langLabel})`);
     } catch (e) {
       toast.error('Не удалось запустить распознавание');
       setIsListening(false);
@@ -370,19 +465,32 @@ export default function AutismAICompanion() {
               <span className="text-white dark:text-zinc-900 text-xl font-semibold">🧭</span>
             </div>
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Compás TEA AI</h1>
-              <p className="text-xs text-zinc-500 -mt-1">Компас по аутизму (TEA) с ИИ • Гибкая локация • Голос + фото</p>
+              <h1 className="text-2xl font-semibold tracking-tight">{t(lang, 'header_title')}</h1>
+              <p className="text-xs text-zinc-500 -mt-1">{t(lang, 'header_subtitle')}</p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-sm">
+            {/* Language switcher - default Russian */}
+            <div className="flex gap-1 text-xs">
+              {(['ru','en','uk','es'] as const).map(l => (
+                <button 
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-2 py-0.5 rounded ${lang === l ? 'bg-zinc-900 text-white' : 'border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900'}`}
+                  title={l === 'ru' ? 'Русский (по умолчанию)' : l === 'en' ? 'English' : l === 'uk' ? 'Українська' : 'Español'}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
             <button 
               onClick={clearAllData}
               className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
             >
-              <RefreshCw className="w-4 h-4" /> Reiniciar datos
+              <RefreshCw className="w-4 h-4" /> {t(lang, 'clear_data')}
             </button>
             <div className="text-xs px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">
-              Enfocado en Blanes + Global
+              {t(lang, 'focused_label')}
             </div>
           </div>
         </div>
@@ -394,13 +502,8 @@ export default function AutismAICompanion() {
           <div className="flex gap-3">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
-              <strong>AVISO IMPORTANTE — LÉELO CADA VEZ QUE USES LA APP:</strong><br />
-              Esta aplicación web es una herramienta de <strong>información general, apoyo práctico y organización</strong> para padres. 
-              <strong>NO es un sustituto de diagnóstico médico, tratamiento, terapia ni consejo profesional.</strong> 
-              El autismo requiere evaluación por especialistas cualificados (pediatra, neurólogo infantil, psicólogo clínico, logopeda, etc.).<br />
-              Los recursos y recomendaciones se basan en fuentes públicas conocidas (Autismo España, NCAEP, CDC, ASAT, etc.) y deben verificarse siempre. 
-              Como familia refugiada que puede mudarse, la app está diseñada para que introduzcas cualquier ubicación. 
-              <strong>Actúa en paralelo contactando Atención Temprana en tu zona actual.</strong> El tiempo es valioso, pero la calidad profesional también.
+              <strong>{t(lang, 'disclaimer_title')}</strong><br />
+              {t(lang, 'disclaimer_text')}
             </div>
           </div>
         </div>
@@ -408,18 +511,18 @@ export default function AutismAICompanion() {
         {/* LOCATION SELECTOR - Core feature for refugees */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-            <MapPin className="w-4 h-4" /> Ubicación actual (cámbiala cuando te mudes)
+            <MapPin className="w-4 h-4" /> {t(lang, 'location_label')}
           </div>
           
           <div className="location-bar rounded-2xl p-5 flex flex-col sm:flex-row gap-4 items-end">
             <div className="flex-1 w-full">
-              <label className="text-xs uppercase tracking-widest text-zinc-500 block mb-1.5">Ciudad / Región actual</label>
+              <label className="text-xs uppercase tracking-widest text-zinc-500 block mb-1.5">{t(lang, 'location_label')}</label>
               <input
                 type="text"
                 value={locationInput}
                 onChange={(e) => setLocationInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && updateLocation()}
-                placeholder="Ej: Blanes, Girona, Barcelona, Madrid, o cualquier ciudad donde estés ahora"
+                placeholder={t(lang, 'location_placeholder')}
                 className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-lg focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white"
               />
               <p className="text-[10px] text-zinc-500 mt-1.5">Diseñado para familias que cambian de residencia frecuentemente. Funciona con cualquier texto.</p>
@@ -429,13 +532,13 @@ export default function AutismAICompanion() {
                 onClick={updateLocation}
                 className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-zinc-900 hover:bg-black text-white font-medium transition-colors flex items-center justify-center gap-2"
               >
-                <MapPin className="w-4 h-4" /> Guardar ubicación
+                <MapPin className="w-4 h-4" /> {t(lang, 'save_location')}
               </button>
               <button 
                 onClick={resetToFlexible}
                 className="px-5 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-sm transition-colors"
               >
-                Modo flexible
+                {t(lang, 'flexible_mode')}
               </button>
             </div>
           </div>
@@ -451,11 +554,11 @@ export default function AutismAICompanion() {
         {/* TABS */}
         <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-6 overflow-x-auto pb-1">
           {[
-            { id: 'chat' as const, label: 'Agente IA', icon: MessageCircle },
-            { id: 'resources' as const, label: 'Recursos locales', icon: MapPin },
-            { id: 'knowledge' as const, label: 'Base global + Tendencias', icon: BookOpen },
-            { id: 'tracker' as const, label: 'Seguimiento diario', icon: ClipboardList },
-            { id: 'rehab' as const, label: 'Программа реабилитации (Спортзал)', icon: Target },
+            { id: 'chat' as const, label: t(lang, 'tab_chat'), icon: MessageCircle },
+            { id: 'resources' as const, label: t(lang, 'tab_resources'), icon: MapPin },
+            { id: 'knowledge' as const, label: t(lang, 'tab_knowledge'), icon: BookOpen },
+            { id: 'tracker' as const, label: t(lang, 'tab_tracker'), icon: ClipboardList },
+            { id: 'rehab' as const, label: t(lang, 'tab_rehab'), icon: Target },
           ].map(tab => (
             <button
               key={tab.id}
@@ -734,9 +837,15 @@ export default function AutismAICompanion() {
                 onClick={generateAndSetDailyPlan}
                 className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-medium transition-colors"
               >
-                <Play className="w-5 h-5" /> Сгенерировать план на сегодня (5 упражнений)
+                <Play className="w-5 h-5" /> {t(lang, 'generate_plan')}
               </button>
               <span className="text-sm text-zinc-500">Как в спортзале: разминка + основные навыки + игра.</span>
+              <button 
+                onClick={() => setShowPrintableRehab(true)}
+                className="ml-4 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium no-print"
+              >
+                {t(lang, 'printable_btn')}
+              </button>
             </div>
 
             {dailyPlan.length > 0 && (
@@ -756,7 +865,7 @@ export default function AutismAICompanion() {
 
             {/* Filters */}
             <div className="flex flex-wrap gap-2 mb-6">
-              <button onClick={() => setRehabCategory('all')} className={`px-4 py-1.5 rounded-full text-sm border ${rehabCategory === 'all' ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}>Все</button>
+              <button onClick={() => setRehabCategory('all')} className={`px-4 py-1.5 rounded-full text-sm border ${rehabCategory === 'all' ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}>{t(lang, 'all_categories')}</button>
               {rehabCategories.map(cat => (
                 <button 
                   key={cat.key} 
@@ -829,6 +938,68 @@ export default function AutismAICompanion() {
               Программа собрана из практик реальных центров. Для Бланеса комбинируйте с местными службами (Atención Temprana, Junts Autisme). 
               Регулярность важнее идеальности. Отслеживайте прогресс в трекере и делитесь фото с ИИ для идей.
             </div>
+
+            {/* Printable / PDF Template Overlay */}
+            {showPrintableRehab && (
+              <div className="fixed inset-0 bg-white z-[100] overflow-auto p-8 printable-rehab no-print">
+                <div className="max-w-[210mm] mx-auto"> {/* A4 width approx */}
+                  <div className="flex justify-between items-center mb-6 no-print">
+                    <h1 className="text-2xl font-bold">{t(lang, 'tab_rehab')} — Printable / PDF Template</h1>
+                    <div>
+                      <button onClick={() => window.print()} className="px-4 py-2 bg-blue-600 text-white rounded mr-2">Print / Save as PDF</button>
+                      <button onClick={() => setShowPrintableRehab(false)} className="px-4 py-2 border rounded">Close</button>
+                    </div>
+                  </div>
+
+                  <div className="mb-6 text-xs border p-3">
+                    <strong>Важно:</strong> Это информационная программа на основе лучших мировых доказательных практик (ESDM, TEACCH, NCAEP). Не заменяет специалистов. Используйте в дополнение к профессиональной помощи. В Испании комбинируйте с Atención Temprana.
+                  </div>
+
+                  <h2 className="text-xl font-semibold mb-4">Ваш ежедневный "спортзал" навыков (пример плана)</h2>
+                  {dailyPlan.length > 0 ? (
+                    <div className="mb-8">
+                      {dailyPlan.map((act, idx) => (
+                        <div key={idx} className="activity-card mb-4 p-3 border">
+                          <strong>{act.title}</strong> ({act.duration})<br />
+                          <em>Цель:</em> {act.description}<br />
+                          <strong>Шаги:</strong> {act.steps.join(' ')}<br />
+                          <strong>Материалы:</strong> {act.materials}<br />
+                          <div className="visual-placeholder my-2 text-center text-xs"> [Вставьте здесь сгенерированную картинку по описанию: {act.visualDescription}] </div>
+                          <em>Советы:</em> {act.tips}
+                        </div>
+                      ))}
+                    </div>
+                  ) : <p>Сгенерируйте план в основной вкладке перед печатью.</p>}
+
+                  <h2 className="text-xl font-semibold mb-4 mt-8">Полный список упражнений по категориям</h2>
+                  {rehabCategories.map(cat => {
+                    const acts = getActivitiesByCategory(cat.key);
+                    if (acts.length === 0) return null;
+                    return (
+                      <div key={cat.key} className="mb-6">
+                        <h3 className="font-semibold text-lg mb-2">{cat.icon} {cat.label}</h3>
+                        {acts.map(act => (
+                          <div key={act.id} className="activity-card mb-3 p-3 border text-sm">
+                            <strong>{act.title}</strong> — {act.duration}<br />
+                            <em>Описание:</em> {act.description}<br />
+                            <strong>Шаги:</strong><br />
+                            {act.steps.map((s,i) => <div key={i}>{s}</div>)}<br />
+                            <strong>Материалы:</strong> {act.materials}<br />
+                            <div className="visual-placeholder my-1 text-xs"> [Картинка: {act.visualDescription}] </div>
+                            <em>Советы:</em> {act.tips} (Основа: {act.evidence})
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+
+                  <div className="mt-8 text-xs">
+                    <strong>Как использовать шаблон:</strong> Распечатайте или сохраните как PDF. Добавляйте свои картинки по визуальным описаниям. Отмечайте выполнение. Адаптируйте под ребенка. 
+                    Полная версия с интерактивом — в приложении.
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Spain Local Context (secondary, as requested) */}
             <div className="mt-10 p-6 bg-white dark:bg-zinc-900 border border-blue-200 dark:border-blue-800 rounded-2xl">
