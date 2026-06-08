@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #171717;
+  --card: #ffffff;
+  --border: #e4e4e7;
+  --primary: #18181b;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #09090b;
+  --foreground: #ededed;
+  --card: #18181b;
+  --border: #27272a;
+  --primary: #f4f4f5;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans);
+}
+
+/* Nice cards and chat styling */
+.resource-card, .knowledge-card {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.resource-card:hover, .knowledge-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.1);
+}
+
+.chat-message {
+  max-width: 85%;
+}
+
+.ai-message {
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.user-message {
+  background: var(--primary);
+  color: var(--background);
+}
+
+.disclaimer {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+}
+
+.location-bar {
+  background: white;
+  border: 1px solid var(--border);
+}
+
+@media (prefers-color-scheme: dark) {
+  .disclaimer {
+    background: #451a03;
+    border-color: #92400e;
+    color: #fbbf24;
+  }
 }
