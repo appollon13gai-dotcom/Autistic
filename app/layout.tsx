@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Quicksand, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "ИИ-Помощник для детей с аутизмом | Спортзал Суперзверей (гибкая локация)",
-  description: "Веб-приложение с ИИ-агентом для родителей детей с аутизмом. Глобальная база знаний по доказательным практикам (ESDM, TEACCH, NCAEP), ресурсы по локации, ежедневные планы занятий, трекер прогресса, printable-материалы. По умолчанию русский язык с переключением на английский, украинский и испанский. Гибкая локация — для семей, которые часто переезжают. Важно: приложение информативное и не заменяет врачей, диагноз или профессиональную терапию.",
+  title: "SkyBridge — поддержка нейроотличных детей и семей (РАС)",
+  description:
+    "SkyBridge — спокойное приложение для родителей детей с аутизмом (РАС): ИИ-помощник, локальные ресурсы, глобальная база доказательных практик (ESDM, TEACCH, NCAEP), ежедневный трекер и онлайн-программа реабилитации. Мотив «авиатор + флаги мира». Языки: русский и английский. Гибкая локация для семей, которые часто переезжают. Информационный инструмент — не заменяет врачей и диагноз.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -29,9 +32,15 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${quicksand.variable} ${openSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-background text-on-surface">
         {children}
         <Toaster position="top-center" richColors closeButton />
       </body>
