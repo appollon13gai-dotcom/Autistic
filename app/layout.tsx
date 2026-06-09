@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Compás TEA AI | Asistente para familias con autismo (Blanes y flexible por ubicación)",
-  description: "Aplicación web con agente IA para padres: recursos locales (Blanes/Girona/Cataluña), base de conocimiento global sobre autismo en niños, seguimiento diario, tendencias y apoyo práctico. Diseñada para familias que se mudan frecuentemente (refugiados). Siempre con disclaimers: no sustituye a profesionales.",
+  title: "ИИ-Помощник для детей с аутизмом | Спортзал Суперзверей (гибкая локация)",
+  description: "Веб-приложение с ИИ-агентом для родителей детей с аутизмом. Глобальная база знаний по доказательным практикам (ESDM, TEACCH, NCAEP), ресурсы по локации, ежедневные планы занятий, трекер прогресса, printable-материалы. По умолчанию русский язык с переключением на английский, украинский и испанский. Гибкая локация — для семей, которые часто переезжают. Важно: приложение информативное и не заменяет врачей, диагноз или профессиональную терапию.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">

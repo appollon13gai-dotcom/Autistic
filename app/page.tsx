@@ -31,7 +31,7 @@ interface TrackerEntry {
 // Simple i18n - default Russian, switchable to EN, UK, ES
 const translations: Record<string, Record<string, string>> = {
   ru: {
-    header_title: "Compás TEA AI",
+    header_title: "Компас TEA AI",
     header_subtitle: "Компас по аутизму (TEA) с ИИ • Гибкая локация • Голос + фото",
     clear_data: "Очистить данные",
     focused_label: "Фокус: Глобальные лучшие практики + Локальная помощь",
@@ -544,7 +544,7 @@ export default function AutismAICompanion() {
                 placeholder={t(lang, 'location_placeholder')}
                 className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-lg focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white"
               />
-              <p className="text-[10px] text-zinc-500 mt-1.5">Diseñado para familias que cambian de residencia frecuentemente. Funciona con cualquier texto.</p>
+              <p className="text-[10px] text-zinc-500 mt-1.5">Разработано для семей, которые часто меняют место жительства. Работает с любым текстом.</p>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
               <button 
@@ -565,7 +565,7 @@ export default function AutismAICompanion() {
           {isLocationSet && (
             <div className="mt-3 inline-flex items-center gap-2 text-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full px-4 py-1.5">
               <MapPin className="w-4 h-4 text-emerald-600" />
-              <span className="font-medium">Ubicación activa:</span> <span className="text-emerald-700 dark:text-emerald-400">{currentLocation}</span>
+              <span className="font-medium">Активная локация:</span> <span className="text-emerald-700 dark:text-emerald-400">{currentLocation}</span>
             </div>
           )}
         </div>
@@ -643,7 +643,7 @@ export default function AutismAICompanion() {
                 ))}
                 {isTyping && (
                   <div className="flex justify-start">
-                    <div className="ai-message rounded-2xl px-4 py-3 text-sm">Pensando… (adaptando a {currentLocation})</div>
+                    <div className="ai-message rounded-2xl px-4 py-3 text-sm">Думаю… (адаптирую к {currentLocation})</div>
                   </div>
                 )}
               </div>
@@ -724,8 +724,8 @@ export default function AutismAICompanion() {
         {/* === RESOURCES (Location filtered) === */}
         {activeTab === 'resources' && (
           <div>
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><MapPin className="w-5 h-5" /> Recursos para: {currentLocation}</h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">Filtrados según tu ubicación actual. Siempre verifica los contactos y disponibilidad. Para Blanes priorizamos Cataluña/Girona + nacionales.</p>
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><MapPin className="w-5 h-5" /> Ресурсы для: {currentLocation}</h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">Отфильтрованы по вашей текущей локации. Всегда проверяйте контакты и доступность. Для Бланеса приоритет — Каталония/Жирона + национальные.</p>
 
             <div className="grid md:grid-cols-2 gap-4">
               {filteredResources.length > 0 ? filteredResources.map(res => (
@@ -733,16 +733,16 @@ export default function AutismAICompanion() {
                   <div className="uppercase text-[10px] tracking-widest text-emerald-600 dark:text-emerald-500 mb-1">{res.type.toUpperCase()} • {res.location}</div>
                   <h3 className="font-semibold text-lg mb-2">{res.title}</h3>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{res.description}</p>
-                  {res.contact && <p className="text-xs mb-1"><strong>Contacto:</strong> {res.contact}</p>}
+                  {res.contact && <p className="text-xs mb-1"><strong>Контакт:</strong> {res.contact}</p>}
                   {res.website && <a href={res.website} target="_blank" className="text-xs text-blue-600 dark:text-blue-400 hover:underline block mb-1">{res.website}</a>}
                   {res.notes && <p className="text-xs bg-zinc-100 dark:bg-zinc-950 p-2 rounded mt-2">{res.notes}</p>}
-                  {res.languages && <div className="text-[10px] mt-2 text-zinc-500">Idiomas: {res.languages.join(' • ')}</div>}
+                  {res.languages && <div className="text-[10px] mt-2 text-zinc-500">Языки: {res.languages.join(' • ')}</div>}
                 </div>
-              )) : <p>No se encontraron recursos específicos. Prueba con otra ubicación o usa el chat.</p>}
+              )) : <p>Не найдено конкретных ресурсов. Попробуйте другую локацию или используйте чат.</p>}
             </div>
 
             <div className="mt-8 text-xs text-zinc-500">
-              Para Blanes: Enfócate primero en Atención Temprana a través del sistema público de Girona y Junts Autisme (apoyo a familias en Cataluña). Usa el mapa de Autismo España para entidades cercanas.
+              Для Бланеса: Сначала сосредоточьтесь на Atención Temprana через государственную систему Жироны и Junts Autisme (поддержка семей в Каталонии). Используйте карту Autismo España для ближайших организаций.
             </div>
           </div>
         )}
@@ -750,8 +750,8 @@ export default function AutismAICompanion() {
         {/* === GLOBAL KNOWLEDGE + TRENDS === */}
         {activeTab === 'knowledge' && (
           <div className="max-w-4xl">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><BookOpen className="w-5 h-5" /> Base de conocimiento global (accesible desde cualquier lugar)</h2>
-            <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">Prácticas basadas en evidencia (NCAEP, ASAT, CDC y revisiones internacionales). El agente IA las usa para dar recomendaciones.</p>
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><BookOpen className="w-5 h-5" /> Глобальная база знаний (доступно из любого места)</h2>
+            <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">Практики, основанные на доказательствах (NCAEP, ASAT, CDC и международные обзоры). Агент ИИ использует их для рекомендаций.</p>
 
             <div className="grid gap-4">
               {globalKnowledge.map(item => (
@@ -761,16 +761,16 @@ export default function AutismAICompanion() {
                       <div className="text-xs uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">{item.category}</div>
                       <h3 className="font-semibold text-lg">{item.title}</h3>
                     </div>
-                    {item.link && <a href={item.link} target="_blank" className="text-xs text-blue-600">Ver fuente →</a>}
+                    {item.link && <a href={item.link} target="_blank" className="text-xs text-blue-600">Посмотреть источник →</a>}
                   </div>
                   <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{item.summary}</p>
-                  <div className="text-[10px] mt-3 text-zinc-500">Fuente: {item.source}</div>
+                  <div className="text-[10px] mt-3 text-zinc-500">Источник: {item.source}</div>
                 </div>
               ))}
             </div>
 
             <div className="mt-6 p-4 bg-white dark:bg-zinc-900 border rounded-2xl text-xs">
-              <strong>Consejo:</strong> Las 28 prácticas de NCAEP + módulos AFIRM gratuitos son el estándar oro mundial para intervenciones en niños. Prioriza aquellas que se pueden implementar en casa con entrenamiento de padres. Revisa siempre ASAT para evaluar nuevas "terapias".
+              <strong>Совет:</strong> 28 практик NCAEP + бесплатные модули AFIRM — мировой золотой стандарт для вмешательств у детей. Приоритет тем, которые можно реализовать дома с обучением родителей. Всегда проверяйте ASAT для оценки новых "терапий".
             </div>
           </div>
         )}
@@ -778,24 +778,24 @@ export default function AutismAICompanion() {
         {/* === TRACKER === */}
         {activeTab === 'tracker' && (
           <div className="max-w-2xl">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><ClipboardList className="w-5 h-5" /> Seguimiento diario (registros para los médicos)</h2>
-            <p className="text-sm mb-6 text-zinc-600 dark:text-zinc-400">Anota observaciones simples. Estos datos serán oro cuando consigas cita. Se guardan localmente en tu navegador.</p>
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><ClipboardList className="w-5 h-5" /> Ежедневный трекер (записи для врачей)</h2>
+            <p className="text-sm mb-6 text-zinc-600 dark:text-zinc-400">Записывайте простые наблюдения. Эти данные будут золотом, когда получите приём. Сохраняются локально в вашем браузере.</p>
 
             <div className="bg-white dark:bg-zinc-900 border rounded-3xl p-6 space-y-4">
               <div>
-                <label className="text-xs text-zinc-500">Notas generales / Qué pasó hoy</label>
-                <textarea value={trackerNotes} onChange={e => setTrackerNotes(e.target.value)} className="w-full mt-1 h-20 rounded-xl border p-3 text-sm" placeholder="Ej: Jugó 15 min turnos con bloques. Respondió a su nombre 2 veces..." />
+                <label className="text-xs text-zinc-500">Общие заметки / Что произошло сегодня</label>
+                <textarea value={trackerNotes} onChange={e => setTrackerNotes(e.target.value)} className="w-full mt-1 h-20 rounded-xl border p-3 text-sm" placeholder="Напр.: Играл 15 мин с блоками по очереди. Откликался на имя 2 раза..." />
               </div>
               <div>
-                <label className="text-xs text-zinc-500">Habilidades nuevas o mejoradas</label>
-                <input value={trackerSkills} onChange={e => setTrackerSkills(e.target.value)} className="w-full mt-1 rounded-xl border p-3 text-sm" placeholder="Ej: Dijo 'mamá' con intención, usó gesto para 'más'" />
+                <label className="text-xs text-zinc-500">Новые или улучшенные навыки</label>
+                <input value={trackerSkills} onChange={e => setTrackerSkills(e.target.value)} className="w-full mt-1 rounded-xl border p-3 text-sm" placeholder="Напр.: Сказал 'мама' с намерением, использовал жест для 'ещё'" />
               </div>
               <div>
-                <label className="text-xs text-zinc-500">Desafíos o comportamientos a notar</label>
-                <input value={trackerChallenges} onChange={e => setTrackerChallenges(e.target.value)} className="w-full mt-1 rounded-xl border p-3 text-sm" placeholder="Ej: Mucha sensibilidad al ruido del mar hoy" />
+                <label className="text-xs text-zinc-500">Вызовы или поведение, которое стоит отметить</label>
+                <input value={trackerChallenges} onChange={e => setTrackerChallenges(e.target.value)} className="w-full mt-1 rounded-xl border p-3 text-sm" placeholder="Напр.: Сильная чувствительность к шуму моря сегодня" />
               </div>
 
-              <button onClick={saveTrackerEntry} className="w-full py-3 rounded-2xl bg-zinc-900 text-white font-medium hover:bg-black transition-colors">Guardar entrada del día</button>
+              <button onClick={saveTrackerEntry} className="w-full py-3 rounded-2xl bg-zinc-900 text-white font-medium hover:bg-black transition-colors">Сохранить запись за день</button>
             </div>
 
             {trackerEntries.length > 0 && (
