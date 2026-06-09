@@ -143,6 +143,40 @@ const translations: Record<string, Record<string, string>> = {
     lang_russian: "русский",
     lang_english: "английский",
     resources_source: "Источник:",
+    tab_family: "Семейный мост",
+    family_greeting: "С возвращением, маленький авиатор Натан!",
+    family_subtitle: "Папа Андрей далеко на работе, но он всегда в твоём сердце.",
+    family_home: "Дом",
+    family_airport: "Аэропорт",
+    family_countdown: "5 дней до возвращения папы!",
+    family_flight_title: "Где сейчас папа Андрей",
+    family_currently_in: "Сейчас в Испании",
+    family_flight_note: "Папа Андрей — авиатор, наземный инженер. Он готовит самолёты к полётам.",
+    family_clips_title: "Видео-приветы от папы",
+    family_clip_1: "Утро над облаками",
+    family_clip_2: "Ночные звёзды в ангаре",
+    family_letter_title: "Письмо для папы",
+    family_letter_desc: "Натан, выбери флаги и слова, чтобы отправить папе Андрею открытку!",
+    family_choose_flag: "Выбери флаг:",
+    family_choose_message: "Выбери сообщение:",
+    family_msg_1: "Я тебя люблю!",
+    family_msg_2: "Возвращайся скорее!",
+    family_msg_3: "Скучаю по тебе!",
+    family_msg_4: "До встречи!",
+    family_send: "Отправить папе",
+    family_postcard_empty: "Выбери хотя бы один флаг или сообщение для папы.",
+    family_postcard_sent: "Открытка отправлена папе Андрею! 💙",
+    family_members_title: "Наша семья",
+    family_mom: "Мама Ира",
+    family_brother: "Брат Аким",
+    family_sister: "Сестра Ксения",
+    family_child: "Натан",
+    family_dad: "Папа Андрей",
+    family_role_mom: "хранитель дома",
+    family_role_brother: "старший помощник",
+    family_role_sister: "помощница",
+    family_role_child: "наш авиатор",
+    family_role_dad: "наземный инженер",
   },
   en: {
     header_title: "ASD Compass AI",
@@ -257,6 +291,40 @@ const translations: Record<string, Record<string, string>> = {
     lang_russian: "Russian",
     lang_english: "English",
     resources_source: "Source:",
+    tab_family: "Family Bridge",
+    family_greeting: "Welcome back, little aviator Nathan!",
+    family_subtitle: "Dad Andrii is far away at work, but he's always in your heart.",
+    family_home: "Home",
+    family_airport: "Airport",
+    family_countdown: "5 days until Dad is home!",
+    family_flight_title: "Where Dad Andrii is now",
+    family_currently_in: "Currently in Spain",
+    family_flight_note: "Dad Andrii is an aviator, a ground engineer. He gets the planes ready to fly.",
+    family_clips_title: "Video hellos from Dad",
+    family_clip_1: "Morning over the clouds",
+    family_clip_2: "Night stars in the hangar",
+    family_letter_title: "Letter for Dad",
+    family_letter_desc: "Nathan, pick flags and words to send a postcard to Dad Andrii!",
+    family_choose_flag: "Choose a flag:",
+    family_choose_message: "Choose a message:",
+    family_msg_1: "I love you!",
+    family_msg_2: "Come home soon!",
+    family_msg_3: "Miss you lots!",
+    family_msg_4: "See you soon!",
+    family_send: "Send to Dad",
+    family_postcard_empty: "Pick at least one flag or message for Dad.",
+    family_postcard_sent: "Postcard sent to Dad Andrii! 💙",
+    family_members_title: "Our family",
+    family_mom: "Mom Iryna",
+    family_brother: "Brother Akym",
+    family_sister: "Sister Kseniia",
+    family_child: "Nathan",
+    family_dad: "Dad Andrii",
+    family_role_mom: "keeper of home",
+    family_role_brother: "big helper",
+    family_role_sister: "helper",
+    family_role_child: "our aviator",
+    family_role_dad: "ground engineer",
   },
   uk: {
     header_title: "Компас РАС AI",
@@ -552,7 +620,24 @@ export default function AutismAICompanion() {
   });
 
   // Active tab
-  const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('chat');
+  const [activeTab, setActiveTab] = useState<'family' | 'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('family');
+
+  // Family Bridge — "Letter for Dad (Andrii)" postcard builder for Nathan
+  const [postcardFlags, setPostcardFlags] = useState<string[]>([]);
+  const [postcardMessage, setPostcardMessage] = useState<string>('');
+
+  const addPostcardFlag = (flag: string) => {
+    setPostcardFlags(prev => (prev.length >= 4 ? prev : [...prev, flag]));
+  };
+  const sendPostcard = () => {
+    if (postcardFlags.length === 0 && !postcardMessage) {
+      toast.error(t(lang, 'family_postcard_empty'));
+      return;
+    }
+    toast.success(t(lang, 'family_postcard_sent'));
+    setPostcardFlags([]);
+    setPostcardMessage('');
+  };
 
   // Update filtered resources when location changes
   useEffect(() => {
@@ -966,6 +1051,7 @@ export default function AutismAICompanion() {
         {/* TABS — soft pill navigation */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
           {[
+            { id: 'family' as const, label: t(lang, 'tab_family'), icon: Send },
             { id: 'chat' as const, label: t(lang, 'tab_chat'), icon: MessageCircle },
             { id: 'resources' as const, label: t(lang, 'tab_resources'), icon: MapPin },
             { id: 'knowledge' as const, label: t(lang, 'tab_knowledge'), icon: BookOpen },
@@ -985,6 +1071,137 @@ export default function AutismAICompanion() {
             </button>
           ))}
         </div>
+
+        {/* === FAMILY BRIDGE (Aviator home base for Nathan) === */}
+        {activeTab === 'family' && (
+          <div>
+            {/* Hero: animated sky + countdown to Dad's return */}
+            <section className="relative overflow-hidden rounded-lg bg-primary-fixed mb-8 p-8 min-h-[280px] flex flex-col justify-center items-center text-center">
+              <div className="absolute inset-0 pointer-events-none opacity-30">
+                <div className="cloud-animation absolute top-8 text-on-primary-fixed" style={{ animationDuration: '38s' }}>☁️</div>
+                <div className="cloud-animation absolute top-28 text-5xl text-on-primary-fixed" style={{ animationDuration: '26s', animationDelay: '-6s' }}>☁️</div>
+                <div className="cloud-animation absolute bottom-8 text-on-primary-fixed" style={{ animationDuration: '46s', animationDelay: '-16s' }}>☁️</div>
+              </div>
+              <div className="relative z-10 w-full max-w-2xl">
+                <h2 className="font-headline text-2xl sm:text-3xl font-bold text-on-primary-fixed mb-2">{t(lang, 'family_greeting')}</h2>
+                <p className="text-on-primary-fixed-variant max-w-xl mx-auto">{t(lang, 'family_subtitle')}</p>
+                <div className="mt-10">
+                  <div className="flex justify-between items-end mb-3 px-1 font-headline font-semibold text-on-primary-fixed text-sm">
+                    <span>{t(lang, 'family_home')}</span>
+                    <span className="font-bold">{t(lang, 'family_countdown')}</span>
+                    <span>{t(lang, 'family_airport')}</span>
+                  </div>
+                  <div className="relative h-4 bg-white/40 rounded-full">
+                    <div className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-1000" style={{ width: '75%' }}></div>
+                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-1000 text-primary" style={{ left: '75%' }}>
+                      <Play className="w-6 h-6 rotate-45 fill-primary" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left: flight status + aviator clips */}
+              <div className="lg:col-span-2 space-y-8">
+                <div className="bg-surface-container-lowest rounded-lg p-6 card-soft-border">
+                  <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h3 className="font-headline text-xl font-bold flex items-center gap-2"><MapPin className="w-5 h-5 text-primary" /> {t(lang, 'family_flight_title')}</h3>
+                    <div className="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full flex items-center gap-2 font-headline font-semibold text-sm">
+                      🇪🇸 {t(lang, 'family_currently_in')}
+                    </div>
+                  </div>
+                  <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-secondary-container via-primary-fixed to-tertiary-fixed border-2 border-outline-variant flex items-center justify-center">
+                    <span className="text-6xl">🗺️</span>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <span className="relative flex h-12 w-12 items-center justify-center">
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-primary/40 animate-ping"></span>
+                        <span className="relative inline-flex rounded-full h-10 w-10 bg-primary text-on-primary items-center justify-center text-xl">📍</span>
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-on-surface-variant mt-4">{t(lang, 'family_flight_note')}</p>
+                </div>
+
+                <div>
+                  <h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-4">🎬 {t(lang, 'family_clips_title')}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {[
+                      { label: t(lang, 'family_clip_1'), grad: 'from-tertiary-fixed to-primary-fixed' },
+                      { label: t(lang, 'family_clip_2'), grad: 'from-primary-container to-inverse-surface' },
+                    ].map((clip, i) => (
+                      <div key={i} className={`group relative aspect-video rounded-lg overflow-hidden card-soft-border cursor-pointer active-tap bg-gradient-to-br ${clip.grad} flex items-center justify-center`}>
+                        <div className="bg-surface-container-lowest/90 p-4 rounded-full shadow-lg group-hover:scale-110 transition-transform">
+                          <Play className="w-7 h-7 text-primary fill-primary" />
+                        </div>
+                        <span className="absolute bottom-3 left-3 bg-primary/90 text-on-primary px-3 py-1 rounded-full text-xs font-headline font-semibold">{clip.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Family members */}
+                <div className="bg-surface-container-lowest rounded-lg p-6 card-soft-border">
+                  <h3 className="font-headline text-xl font-bold mb-4">{t(lang, 'family_members_title')}</h3>
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      { emoji: '🛩️', name: t(lang, 'family_dad'), role: t(lang, 'family_role_dad') },
+                      { emoji: '🏡', name: t(lang, 'family_mom'), role: t(lang, 'family_role_mom') },
+                      { emoji: '🧒', name: t(lang, 'family_brother'), role: t(lang, 'family_role_brother') },
+                      { emoji: '👧', name: t(lang, 'family_sister'), role: t(lang, 'family_role_sister') },
+                      { emoji: '🦕', name: t(lang, 'family_child'), role: t(lang, 'family_role_child') },
+                    ].map((m, i) => (
+                      <div key={i} className="flex items-center gap-3 bg-surface-container-low rounded-full pl-2 pr-4 py-2 border border-outline-variant">
+                        <span className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-xl">{m.emoji}</span>
+                        <div className="leading-tight">
+                          <div className="font-headline font-semibold text-sm">{m.name}</div>
+                          <div className="text-[11px] text-on-surface-variant">{m.role}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Letter for Dad */}
+              <aside>
+                <div className="bg-tertiary-fixed rounded-lg p-6 border-2 border-tertiary-container">
+                  <h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-2 text-on-tertiary-container">💌 {t(lang, 'family_letter_title')}</h3>
+                  <p className="text-sm mb-5 text-on-tertiary-container">{t(lang, 'family_letter_desc')}</p>
+
+                  {/* Postcard canvas */}
+                  <div className="bg-surface-container-lowest rounded-lg p-5 min-h-[180px] mb-5 flex flex-col justify-between border-2 border-dashed border-tertiary-fixed-dim">
+                    <div>
+                      <div className="flex gap-2 flex-wrap min-h-[2rem] text-3xl">
+                        {postcardFlags.map((f, i) => <span key={i} className="animate-bounce" style={{ animationIterationCount: 1 }}>{f}</span>)}
+                      </div>
+                      <div className="font-headline text-lg font-bold text-primary mt-3">{postcardMessage || '…'}</div>
+                    </div>
+                    <div className="flex justify-end text-3xl text-outline-variant">✉️</div>
+                  </div>
+
+                  <label className="font-headline font-semibold text-xs uppercase tracking-wider text-on-tertiary-container block mb-2">{t(lang, 'family_choose_flag')}</label>
+                  <div className="flex flex-wrap gap-3 mb-5">
+                    {['🇬🇧', '🇺🇦', '🇪🇸', '🇺🇸'].map(f => (
+                      <button key={f} onClick={() => addPostcardFlag(f)} className="w-12 h-12 rounded-full bg-surface-container-lowest border-2 border-white shadow-sm flex items-center justify-center text-2xl active-tap">{f}</button>
+                    ))}
+                  </div>
+
+                  <label className="font-headline font-semibold text-xs uppercase tracking-wider text-on-tertiary-container block mb-2">{t(lang, 'family_choose_message')}</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {['family_msg_1', 'family_msg_2', 'family_msg_3', 'family_msg_4'].map(k => (
+                      <button key={k} onClick={() => setPostcardMessage(t(lang, k))} className="bg-surface-container-lowest/80 hover:bg-surface-container-lowest p-3 rounded-lg text-sm font-headline font-semibold text-on-surface transition-colors active-tap">{t(lang, k)}</button>
+                    ))}
+                  </div>
+
+                  <button onClick={sendPostcard} className="w-full mt-6 bg-primary text-on-primary py-4 rounded-lg font-headline font-bold flex items-center justify-center gap-2 active-tap">
+                    <Send className="w-5 h-5" /> {t(lang, 'family_send')}
+                  </button>
+                </div>
+              </aside>
+            </div>
+          </div>
+        )}
 
         {/* === CHAT / AI AGENT (Primary for user) === */}
         {activeTab === 'chat' && (
