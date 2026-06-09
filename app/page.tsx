@@ -143,40 +143,6 @@ const translations: Record<string, Record<string, string>> = {
     lang_russian: "русский",
     lang_english: "английский",
     resources_source: "Источник:",
-    tab_family: "Семейный мост",
-    family_greeting: "С возвращением, маленький авиатор Натан!",
-    family_subtitle: "Папа Андрей далеко на работе, но он всегда в твоём сердце.",
-    family_home: "Дом",
-    family_airport: "Аэропорт",
-    family_countdown: "5 дней до возвращения папы!",
-    family_flight_title: "Где сейчас папа Андрей",
-    family_currently_in: "Сейчас в Испании",
-    family_flight_note: "Папа Андрей — авиатор, наземный инженер. Он готовит самолёты к полётам.",
-    family_clips_title: "Видео-приветы от папы",
-    family_clip_1: "Утро над облаками",
-    family_clip_2: "Ночные звёзды в ангаре",
-    family_letter_title: "Письмо для папы",
-    family_letter_desc: "Натан, выбери флаги и слова, чтобы отправить папе Андрею открытку!",
-    family_choose_flag: "Выбери флаг:",
-    family_choose_message: "Выбери сообщение:",
-    family_msg_1: "Я тебя люблю!",
-    family_msg_2: "Возвращайся скорее!",
-    family_msg_3: "Скучаю по тебе!",
-    family_msg_4: "До встречи!",
-    family_send: "Отправить папе",
-    family_postcard_empty: "Выбери хотя бы один флаг или сообщение для папы.",
-    family_postcard_sent: "Открытка отправлена папе Андрею! 💙",
-    family_members_title: "Наша семья",
-    family_mom: "Мама Ира",
-    family_brother: "Брат Аким",
-    family_sister: "Сестра Ксения",
-    family_child: "Натан",
-    family_dad: "Папа Андрей",
-    family_role_mom: "хранитель дома",
-    family_role_brother: "старший помощник",
-    family_role_sister: "помощница",
-    family_role_child: "наш авиатор",
-    family_role_dad: "наземный инженер",
   },
   en: {
     header_title: "ASD Compass AI",
@@ -291,40 +257,6 @@ const translations: Record<string, Record<string, string>> = {
     lang_russian: "Russian",
     lang_english: "English",
     resources_source: "Source:",
-    tab_family: "Family Bridge",
-    family_greeting: "Welcome back, little aviator Nathan!",
-    family_subtitle: "Dad Andrii is far away at work, but he's always in your heart.",
-    family_home: "Home",
-    family_airport: "Airport",
-    family_countdown: "5 days until Dad is home!",
-    family_flight_title: "Where Dad Andrii is now",
-    family_currently_in: "Currently in Spain",
-    family_flight_note: "Dad Andrii is an aviator, a ground engineer. He gets the planes ready to fly.",
-    family_clips_title: "Video hellos from Dad",
-    family_clip_1: "Morning over the clouds",
-    family_clip_2: "Night stars in the hangar",
-    family_letter_title: "Letter for Dad",
-    family_letter_desc: "Nathan, pick flags and words to send a postcard to Dad Andrii!",
-    family_choose_flag: "Choose a flag:",
-    family_choose_message: "Choose a message:",
-    family_msg_1: "I love you!",
-    family_msg_2: "Come home soon!",
-    family_msg_3: "Miss you lots!",
-    family_msg_4: "See you soon!",
-    family_send: "Send to Dad",
-    family_postcard_empty: "Pick at least one flag or message for Dad.",
-    family_postcard_sent: "Postcard sent to Dad Andrii! 💙",
-    family_members_title: "Our family",
-    family_mom: "Mom Iryna",
-    family_brother: "Brother Akym",
-    family_sister: "Sister Kseniia",
-    family_child: "Nathan",
-    family_dad: "Dad Andrii",
-    family_role_mom: "keeper of home",
-    family_role_brother: "big helper",
-    family_role_sister: "helper",
-    family_role_child: "our aviator",
-    family_role_dad: "ground engineer",
   },
   uk: {
     header_title: "Компас РАС AI",
@@ -609,35 +541,18 @@ export default function AutismAICompanion() {
   const [showPrintableRehab, setShowPrintableRehab] = useState(false);
 
   // Language state - default Russian as requested, persisted in localStorage
-  const [lang, setLang] = useState<'ru' | 'en'>(() => {
+  const [lang, setLang] = useState<'ru' | 'en' | 'uk' | 'es'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('appLang');
-      if (saved && ['ru', 'en'].includes(saved)) {
-        return saved as 'ru' | 'en';
+      if (saved && ['ru', 'en', 'uk', 'es'].includes(saved)) {
+        return saved as 'ru' | 'en' | 'uk' | 'es';
       }
     }
     return 'ru';
   });
 
   // Active tab
-  const [activeTab, setActiveTab] = useState<'family' | 'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('family');
-
-  // Family Bridge — "Letter for Dad (Andrii)" postcard builder for Nathan
-  const [postcardFlags, setPostcardFlags] = useState<string[]>([]);
-  const [postcardMessage, setPostcardMessage] = useState<string>('');
-
-  const addPostcardFlag = (flag: string) => {
-    setPostcardFlags(prev => (prev.length >= 4 ? prev : [...prev, flag]));
-  };
-  const sendPostcard = () => {
-    if (postcardFlags.length === 0 && !postcardMessage) {
-      toast.error(t(lang, 'family_postcard_empty'));
-      return;
-    }
-    toast.success(t(lang, 'family_postcard_sent'));
-    setPostcardFlags([]);
-    setPostcardMessage('');
-  };
+  const [activeTab, setActiveTab] = useState<'resources' | 'chat' | 'knowledge' | 'tracker' | 'rehab'>('chat');
 
   // Update filtered resources when location changes
   useEffect(() => {
@@ -856,7 +771,7 @@ export default function AutismAICompanion() {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = lang === 'ru' ? 'ru-RU' : 'en-US';
+    recognition.lang = lang === 'ru' ? 'ru-RU' : lang === 'uk' ? 'uk-UA' : lang === 'es' ? 'es-ES' : 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
@@ -948,54 +863,53 @@ export default function AutismAICompanion() {
   // (We'll handle in the send function below)
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header — SkyBridge "Aviator Home Base" */}
-      <header className="bg-background/90 backdrop-blur sticky top-0 z-50 border-b border-outline-variant">
-        <div className="max-w-7xl mx-auto px-container-padding py-4 flex items-center justify-between gap-4">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      {/* Header */}
+      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-black/80 backdrop-blur sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
+            <div className="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-white flex items-center justify-center">
+              <span className="text-white dark:text-zinc-900 text-xl font-semibold">🧭</span>
             </div>
             <div>
-              <h1 className="font-headline text-2xl font-bold text-primary leading-tight">{t(lang, 'header_title')}</h1>
-              <p className="text-xs text-on-surface-variant -mt-0.5 flex items-center gap-1.5">
+              <h1 className="text-2xl font-semibold tracking-tight">{t(lang, 'header_title')}</h1>
+              <p className="text-xs text-zinc-500 -mt-1 flex items-center gap-1">
                 {t(lang, 'header_subtitle')}
-                <span className="inline-flex items-center gap-1 bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-headline font-semibold">
-                  🦕 Rex • {lang === 'ru' ? 'Флаги' : 'Flags'} 47/195
-                </span>
+                <span className="text-lg">🦕</span>
+                <span className="font-medium text-emerald-600">Rex • {lang === 'ru' ? 'Флаги' : lang === 'uk' ? 'Прапори' : lang === 'es' ? 'Banderas' : 'Flags'}: 47/195</span>
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 text-sm">
-            {/* Language switcher RU / EN */}
-            <div className="flex items-center bg-surface-container rounded-full p-1">
-              {(['ru','en'] as const).map(l => (
-                <button
+          <div className="flex items-center gap-4 text-sm">
+            {/* Language switcher - default Russian */}
+            <div className="flex gap-1 text-xs">
+              {(['ru','en','uk','es'] as const).map(l => (
+                <button 
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-3 py-1 font-headline text-xs font-semibold rounded-full transition-all active-tap ${lang === l ? 'bg-surface-container-lowest text-primary shadow-sm' : 'text-on-surface-variant'}`}
-                  title={l === 'ru' ? 'Русский' : 'English'}
+                  className={`px-2 py-0.5 rounded ${lang === l ? 'bg-zinc-900 text-white' : 'border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900'}`}
+                  title={l === 'ru' ? 'Русский (по умолчанию)' : l === 'en' ? 'English' : l === 'uk' ? 'Українська' : 'Español'}
                 >
                   {l.toUpperCase()}
                 </button>
               ))}
             </div>
-            <button
+            <button 
               onClick={clearAllData}
-              className="hidden sm:flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors active-tap"
+              className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
             >
               <RefreshCw className="w-4 h-4" /> {t(lang, 'clear_data')}
             </button>
-            <div className="hidden lg:block text-xs px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-headline font-semibold">
+            <div className="text-xs px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">
               {t(lang, 'focused_label')}
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-container-padding py-8">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         {/* STRONG DISCLAIMER */}
-        <div className="disclaimer rounded-lg p-5 mb-8 text-sm leading-relaxed">
+        <div className="disclaimer rounded-2xl p-5 mb-8 text-sm leading-relaxed">
           <div className="flex gap-3">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
@@ -1020,20 +934,20 @@ export default function AutismAICompanion() {
                 onChange={(e) => setLocationInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && updateLocation()}
                 placeholder={t(lang, 'location_placeholder')}
-                className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-lg focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white"
               />
-              <p className="text-[10px] text-on-surface-variant mt-1.5">{t(lang, 'location_footer')}</p>
+              <p className="text-[10px] text-zinc-500 mt-1.5">{t(lang, 'location_footer')}</p>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
-              <button
+              <button 
                 onClick={updateLocation}
-                className="flex-1 sm:flex-none px-8 py-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-headline font-semibold transition-colors flex items-center justify-center gap-2 active-tap"
+                className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-zinc-900 hover:bg-black text-white font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <MapPin className="w-4 h-4" /> {t(lang, 'save_location')}
               </button>
-              <button
+              <button 
                 onClick={resetToFlexible}
-                className="px-5 py-3 rounded-lg border border-outline-variant hover:bg-surface-container-high text-sm font-headline font-semibold transition-colors active-tap"
+                className="px-5 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-sm transition-colors"
               >
                 {t(lang, 'flexible_mode')}
               </button>
@@ -1041,17 +955,16 @@ export default function AutismAICompanion() {
           </div>
 
           {isLocationSet && (
-            <div className="mt-3 inline-flex items-center gap-2 text-sm bg-surface-container-lowest border border-outline-variant rounded-full px-4 py-1.5">
-              <MapPin className="w-4 h-4 text-secondary" />
-              <span className="font-headline font-semibold">{t(lang, 'active_location')}</span> <span className="text-primary font-semibold">{currentLocation}</span>
+            <div className="mt-3 inline-flex items-center gap-2 text-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full px-4 py-1.5">
+              <MapPin className="w-4 h-4 text-emerald-600" />
+              <span className="font-medium">{t(lang, 'active_location')}</span> <span className="text-emerald-700 dark:text-emerald-400">{currentLocation}</span>
             </div>
           )}
         </div>
 
-        {/* TABS — soft pill navigation */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
+        {/* TABS */}
+        <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-6 overflow-x-auto pb-1">
           {[
-            { id: 'family' as const, label: t(lang, 'tab_family'), icon: Send },
             { id: 'chat' as const, label: t(lang, 'tab_chat'), icon: MessageCircle },
             { id: 'resources' as const, label: t(lang, 'tab_resources'), icon: MapPin },
             { id: 'knowledge' as const, label: t(lang, 'tab_knowledge'), icon: BookOpen },
@@ -1061,147 +974,16 @@ export default function AutismAICompanion() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-headline font-semibold transition-all whitespace-nowrap active-tap border ${
-                activeTab === tab.id
-                  ? 'bg-primary text-on-primary border-primary shadow-sm'
-                  : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant hover:bg-surface-container-high'
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-t-2xl text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+                activeTab === tab.id 
+                  ? 'border-zinc-900 dark:border-white text-zinc-900 dark:text-white' 
+                  : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
               }`}
             >
               <tab.icon className="w-4 h-4" /> {tab.label}
             </button>
           ))}
         </div>
-
-        {/* === FAMILY BRIDGE (Aviator home base for Nathan) === */}
-        {activeTab === 'family' && (
-          <div>
-            {/* Hero: animated sky + countdown to Dad's return */}
-            <section className="relative overflow-hidden rounded-lg bg-primary-fixed mb-8 p-8 min-h-[280px] flex flex-col justify-center items-center text-center">
-              <div className="absolute inset-0 pointer-events-none opacity-30">
-                <div className="cloud-animation absolute top-8 text-on-primary-fixed" style={{ animationDuration: '38s' }}>☁️</div>
-                <div className="cloud-animation absolute top-28 text-5xl text-on-primary-fixed" style={{ animationDuration: '26s', animationDelay: '-6s' }}>☁️</div>
-                <div className="cloud-animation absolute bottom-8 text-on-primary-fixed" style={{ animationDuration: '46s', animationDelay: '-16s' }}>☁️</div>
-              </div>
-              <div className="relative z-10 w-full max-w-2xl">
-                <h2 className="font-headline text-2xl sm:text-3xl font-bold text-on-primary-fixed mb-2">{t(lang, 'family_greeting')}</h2>
-                <p className="text-on-primary-fixed-variant max-w-xl mx-auto">{t(lang, 'family_subtitle')}</p>
-                <div className="mt-10">
-                  <div className="flex justify-between items-end mb-3 px-1 font-headline font-semibold text-on-primary-fixed text-sm">
-                    <span>{t(lang, 'family_home')}</span>
-                    <span className="font-bold">{t(lang, 'family_countdown')}</span>
-                    <span>{t(lang, 'family_airport')}</span>
-                  </div>
-                  <div className="relative h-4 bg-white/40 rounded-full">
-                    <div className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-1000" style={{ width: '75%' }}></div>
-                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-1000 text-primary" style={{ left: '75%' }}>
-                      <Play className="w-6 h-6 rotate-45 fill-primary" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left: flight status + aviator clips */}
-              <div className="lg:col-span-2 space-y-8">
-                <div className="bg-surface-container-lowest rounded-lg p-6 card-soft-border">
-                  <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
-                    <h3 className="font-headline text-xl font-bold flex items-center gap-2"><MapPin className="w-5 h-5 text-primary" /> {t(lang, 'family_flight_title')}</h3>
-                    <div className="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full flex items-center gap-2 font-headline font-semibold text-sm">
-                      🇪🇸 {t(lang, 'family_currently_in')}
-                    </div>
-                  </div>
-                  <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-secondary-container via-primary-fixed to-tertiary-fixed border-2 border-outline-variant flex items-center justify-center">
-                    <span className="text-6xl">🗺️</span>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                      <span className="relative flex h-12 w-12 items-center justify-center">
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-primary/40 animate-ping"></span>
-                        <span className="relative inline-flex rounded-full h-10 w-10 bg-primary text-on-primary items-center justify-center text-xl">📍</span>
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-on-surface-variant mt-4">{t(lang, 'family_flight_note')}</p>
-                </div>
-
-                <div>
-                  <h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-4">🎬 {t(lang, 'family_clips_title')}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {[
-                      { label: t(lang, 'family_clip_1'), grad: 'from-tertiary-fixed to-primary-fixed' },
-                      { label: t(lang, 'family_clip_2'), grad: 'from-primary-container to-inverse-surface' },
-                    ].map((clip, i) => (
-                      <div key={i} className={`group relative aspect-video rounded-lg overflow-hidden card-soft-border cursor-pointer active-tap bg-gradient-to-br ${clip.grad} flex items-center justify-center`}>
-                        <div className="bg-surface-container-lowest/90 p-4 rounded-full shadow-lg group-hover:scale-110 transition-transform">
-                          <Play className="w-7 h-7 text-primary fill-primary" />
-                        </div>
-                        <span className="absolute bottom-3 left-3 bg-primary/90 text-on-primary px-3 py-1 rounded-full text-xs font-headline font-semibold">{clip.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Family members */}
-                <div className="bg-surface-container-lowest rounded-lg p-6 card-soft-border">
-                  <h3 className="font-headline text-xl font-bold mb-4">{t(lang, 'family_members_title')}</h3>
-                  <div className="flex flex-wrap gap-4">
-                    {[
-                      { emoji: '🛩️', name: t(lang, 'family_dad'), role: t(lang, 'family_role_dad') },
-                      { emoji: '🏡', name: t(lang, 'family_mom'), role: t(lang, 'family_role_mom') },
-                      { emoji: '🧒', name: t(lang, 'family_brother'), role: t(lang, 'family_role_brother') },
-                      { emoji: '👧', name: t(lang, 'family_sister'), role: t(lang, 'family_role_sister') },
-                      { emoji: '🦕', name: t(lang, 'family_child'), role: t(lang, 'family_role_child') },
-                    ].map((m, i) => (
-                      <div key={i} className="flex items-center gap-3 bg-surface-container-low rounded-full pl-2 pr-4 py-2 border border-outline-variant">
-                        <span className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-xl">{m.emoji}</span>
-                        <div className="leading-tight">
-                          <div className="font-headline font-semibold text-sm">{m.name}</div>
-                          <div className="text-[11px] text-on-surface-variant">{m.role}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Letter for Dad */}
-              <aside>
-                <div className="bg-tertiary-fixed rounded-lg p-6 border-2 border-tertiary-container">
-                  <h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-2 text-on-tertiary-container">💌 {t(lang, 'family_letter_title')}</h3>
-                  <p className="text-sm mb-5 text-on-tertiary-container">{t(lang, 'family_letter_desc')}</p>
-
-                  {/* Postcard canvas */}
-                  <div className="bg-surface-container-lowest rounded-lg p-5 min-h-[180px] mb-5 flex flex-col justify-between border-2 border-dashed border-tertiary-fixed-dim">
-                    <div>
-                      <div className="flex gap-2 flex-wrap min-h-[2rem] text-3xl">
-                        {postcardFlags.map((f, i) => <span key={i} className="animate-bounce" style={{ animationIterationCount: 1 }}>{f}</span>)}
-                      </div>
-                      <div className="font-headline text-lg font-bold text-primary mt-3">{postcardMessage || '…'}</div>
-                    </div>
-                    <div className="flex justify-end text-3xl text-outline-variant">✉️</div>
-                  </div>
-
-                  <label className="font-headline font-semibold text-xs uppercase tracking-wider text-on-tertiary-container block mb-2">{t(lang, 'family_choose_flag')}</label>
-                  <div className="flex flex-wrap gap-3 mb-5">
-                    {['🇬🇧', '🇺🇦', '🇪🇸', '🇺🇸'].map(f => (
-                      <button key={f} onClick={() => addPostcardFlag(f)} className="w-12 h-12 rounded-full bg-surface-container-lowest border-2 border-white shadow-sm flex items-center justify-center text-2xl active-tap">{f}</button>
-                    ))}
-                  </div>
-
-                  <label className="font-headline font-semibold text-xs uppercase tracking-wider text-on-tertiary-container block mb-2">{t(lang, 'family_choose_message')}</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {['family_msg_1', 'family_msg_2', 'family_msg_3', 'family_msg_4'].map(k => (
-                      <button key={k} onClick={() => setPostcardMessage(t(lang, k))} className="bg-surface-container-lowest/80 hover:bg-surface-container-lowest p-3 rounded-lg text-sm font-headline font-semibold text-on-surface transition-colors active-tap">{t(lang, k)}</button>
-                    ))}
-                  </div>
-
-                  <button onClick={sendPostcard} className="w-full mt-6 bg-primary text-on-primary py-4 rounded-lg font-headline font-bold flex items-center justify-center gap-2 active-tap">
-                    <Send className="w-5 h-5" /> {t(lang, 'family_send')}
-                  </button>
-                </div>
-              </aside>
-            </div>
-          </div>
-        )}
 
         {/* === CHAT / AI AGENT (Primary for user) === */}
         {activeTab === 'chat' && (
@@ -1317,7 +1099,7 @@ export default function AutismAICompanion() {
                   <button 
                     onClick={sendChatMessage} 
                     disabled={(!chatInput.trim() && attachments.length === 0) || isTyping}
-                    className="px-6 rounded-lg bg-primary hover:bg-primary-container disabled:opacity-50 text-on-primary flex items-center justify-center transition-colors active-tap"
+                    className="px-6 rounded-2xl bg-zinc-900 hover:bg-black disabled:opacity-50 text-white flex items-center justify-center transition-colors"
                   >
                     <Send className="w-4 h-4" />
                   </button>
@@ -1399,7 +1181,7 @@ export default function AutismAICompanion() {
                 <input value={trackerChallenges} onChange={e => setTrackerChallenges(e.target.value)} className="w-full mt-1 rounded-xl border p-3 text-sm" placeholder={t(lang, 'tracker_challenges_ph')} />
               </div>
 
-              <button onClick={saveTrackerEntry} className="w-full py-4 rounded-lg bg-primary text-on-primary font-headline font-semibold hover:bg-primary-container transition-colors active-tap">{t(lang, 'tracker_save')}</button>
+              <button onClick={saveTrackerEntry} className="w-full py-3 rounded-2xl bg-zinc-900 text-white font-medium hover:bg-black transition-colors">{t(lang, 'tracker_save')}</button>
             </div>
 
             {trackerEntries.length > 0 && (
@@ -1450,16 +1232,16 @@ export default function AutismAICompanion() {
 
             {/* Daily Plan Generator */}
             <div className="mb-6 flex flex-wrap gap-4 items-center">
-              <button
+              <button 
                 onClick={generateAndSetDailyPlan}
-                className="flex items-center gap-2 px-6 py-3 bg-secondary hover:bg-on-secondary-container text-on-secondary rounded-lg font-headline font-semibold transition-colors active-tap"
+                className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-medium transition-colors"
               >
                 <Play className="w-5 h-5" /> {t(lang, 'generate_plan')}
               </button>
-              <span className="text-sm text-on-surface-variant">{t(lang, 'rehab_gym_desc')}</span>
-              <button
+              <span className="text-sm text-zinc-500">{t(lang, 'rehab_gym_desc')}</span>
+              <button 
                 onClick={() => setShowPrintableRehab(true)}
-                className="ml-4 px-4 py-2 text-sm bg-primary hover:bg-primary-container text-on-primary rounded-lg font-headline font-semibold no-print active-tap"
+                className="ml-4 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium no-print"
               >
                 {t(lang, 'printable_btn')}
               </button>
@@ -1483,12 +1265,12 @@ export default function AutismAICompanion() {
 
             {/* Filters */}
             <div className="flex flex-wrap gap-2 mb-6">
-              <button onClick={() => setRehabCategory('all')} className={`px-4 py-1.5 rounded-full text-sm font-headline font-semibold border transition-colors active-tap ${rehabCategory === 'all' ? 'bg-primary text-on-primary border-primary' : 'bg-surface-container-lowest border-outline-variant hover:bg-surface-container-high'}`}>{t(lang, 'all_categories')}</button>
+              <button onClick={() => setRehabCategory('all')} className={`px-4 py-1.5 rounded-full text-sm border ${rehabCategory === 'all' ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}>{t(lang, 'all_categories')}</button>
               {rehabCategories.map(cat => (
-                <button
-                  key={cat.key}
+                <button 
+                  key={cat.key} 
                   onClick={() => setRehabCategory(cat.key as any)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-headline font-semibold border flex items-center gap-1 transition-colors active-tap ${rehabCategory === cat.key ? 'bg-primary text-on-primary border-primary' : 'bg-surface-container-lowest border-outline-variant hover:bg-surface-container-high'}`}
+                  className={`px-4 py-1.5 rounded-full text-sm border flex items-center gap-1 ${rehabCategory === cat.key ? 'bg-zinc-900 text-white' : 'border-zinc-300'}`}
                 >
                   <span>{cat.icon}</span> {cat.label}
                 </button>
@@ -1537,13 +1319,13 @@ export default function AutismAICompanion() {
                   <div className="mt-auto flex gap-2">
                     <button
                       onClick={() => addRehabToTracker(activity)}
-                      className="flex-1 px-4 py-2 text-sm font-headline font-semibold rounded-lg border border-secondary-container text-on-secondary-container hover:bg-secondary-container/40 transition-colors active-tap"
+                      className="flex-1 px-4 py-2 text-sm rounded-2xl border border-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors"
                     >
                       {t(lang, 'rehab_add_journal')}
                     </button>
                     <button
                       onClick={() => askAIAboutActivity(activity)}
-                      className="flex-1 px-4 py-2 text-sm font-headline font-semibold rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors active-tap"
+                      className="flex-1 px-4 py-2 text-sm rounded-2xl bg-zinc-900 text-white hover:bg-black transition-colors"
                     >
                       {t(lang, 'rehab_ask_ai')}
                     </button>
@@ -1561,8 +1343,8 @@ export default function AutismAICompanion() {
                   <div className="flex justify-between items-center mb-6 no-print">
                     <h1 className="text-2xl font-bold flex items-center gap-2">{t(lang, 'tab_rehab')} — Printable / PDF Template <span className="text-3xl">🇺🇳🗺️</span></h1>
                     <div>
-                      <button onClick={() => window.print()} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-headline font-semibold mr-2 active-tap">{t(lang, 'printable_print')}</button>
-                      <button onClick={() => setShowPrintableRehab(false)} className="px-4 py-2 border border-outline-variant rounded-lg font-headline font-semibold active-tap">{t(lang, 'printable_close')}</button>
+                      <button onClick={() => window.print()} className="px-4 py-2 bg-blue-600 text-white rounded mr-2">{t(lang, 'printable_print')}</button>
+                      <button onClick={() => setShowPrintableRehab(false)} className="px-4 py-2 border rounded">{t(lang, 'printable_close')}</button>
                     </div>
                   </div>
 
@@ -1612,15 +1394,15 @@ export default function AutismAICompanion() {
             )}
 
             {/* Spain Local Context (secondary, as requested) */}
-            <div className="mt-10 p-6 bg-surface-container-lowest border border-outline-variant rounded-lg">
-              <h3 className="font-headline font-bold text-lg mb-3 text-primary">{t(lang, 'spain_title')}</h3>
+            <div className="mt-10 p-6 bg-white dark:bg-zinc-900 border border-blue-200 dark:border-blue-800 rounded-2xl">
+              <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-400">{t(lang, 'spain_title')}</h3>
               <p className="text-sm mb-4">{t(lang, 'spain_subtitle')}</p>
               <ul className="text-sm space-y-2 list-disc pl-5">
-                <li><strong>Atención Temprana</strong>: {lang === 'ru' ? 'Часто доступна даже без полного диагноза. Обратись в местный CAP в Бланесе или региональные службы Girona. Многопрофильная (логопед, OT, психолог). Бесплатно/низкая стоимость.' : 'Often available even without a full diagnosis. Contact your local CAP in Blanes or Girona regional services. Multidisciplinary (speech therapist, OT, psychologist). Free/low cost.'}</li>
-                <li><strong>Fundació Junts Autisme</strong>: {lang === 'ru' ? 'Поддержка семей, навигация по системе, эмоциональная помощь. Тел: 931 808 926, email: info@juntsautisme.org' : 'Family support, system navigation, emotional help. Tel: 931 808 926, email: info@juntsautisme.org'}</li>
-                <li><strong>Autismo España</strong>: {lang === 'ru' ? 'Национальная конфедерация с картой организаций. Ищи по Girona/Barcelona. Инфо, advocacy, ресурсы: autismo.org.es.' : 'National confederation with organisation map. Search by Girona/Barcelona. Info, advocacy, resources: autismo.org.es.'}</li>
+                <li><strong>Atención Temprana</strong>: {lang === 'ru' ? 'Часто доступна даже без полного диагноза. Обратись в местный CAP в Бланесе или региональные службы Girona. Многопрофильная (логопед, OT, психолог). Бесплатно/низкая стоимость.' : lang === 'uk' ? 'Часто доступна навіть без повного діагнозу. Зверніться до місцевого CAP у Бланесі або регіональних служб Жирони. Мультидисциплінарна (логопед, OT, психолог). Безкоштовно/низька вартість.' : lang === 'es' ? 'A menudo disponible incluso sin diagnóstico completo. Ve a tu CAP local en Blanes o los servicios regionales de Girona. Multidisciplinar (logopeda, OT, psicólogo). Gratuita/bajo coste.' : 'Often available even without a full diagnosis. Contact your local CAP in Blanes or Girona regional services. Multidisciplinary (speech therapist, OT, psychologist). Free/low cost.'}</li>
+                <li><strong>Fundació Junts Autisme</strong>: {lang === 'ru' ? 'Поддержка семей, навигация по системе, эмоциональная помощь. Тел: 931 808 926, email: info@juntsautisme.org' : lang === 'uk' ? 'Підтримка сімей, навігація системою, емоційна допомога. Тел: 931 808 926, email: info@juntsautisme.org' : lang === 'es' ? 'Apoyo a familias, navegación del sistema, ayuda emocional. Tel: 931 808 926, email: info@juntsautisme.org' : 'Family support, system navigation, emotional help. Tel: 931 808 926, email: info@juntsautisme.org'}</li>
+                <li><strong>Autismo España</strong>: {lang === 'ru' ? 'Национальная конфедерация с картой организаций. Ищи по Girona/Barcelona. Инфо, advocacy, ресурсы: autismo.org.es.' : lang === 'uk' ? 'Національна конфедерація з картою організацій. Шукайте по Girona/Barcelona. Інфо, advocacy, ресурси: autismo.org.es.' : lang === 'es' ? 'Confederación nacional con mapa de organizaciones. Busca por Girona/Barcelona. Info, advocacy, recursos: autismo.org.es.' : 'National confederation with organisation map. Search by Girona/Barcelona. Info, advocacy, resources: autismo.org.es.'}</li>
               </ul>
-              <p className="text-xs mt-3 text-on-surface-variant">{t(lang, 'spain_footer')}</p>
+              <p className="text-xs mt-3 text-zinc-500">{t(lang, 'spain_footer')}</p>
             </div>
           </div>
         )}

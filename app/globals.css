@@ -1,164 +1,88 @@
 @import "tailwindcss";
 
-/* ============================================================
-   SkyBridge — "Serene Navigator" design system
-   Material 3 tokens: Mediterranean sand / ocean / sage palette.
-   Soft minimalism: rounded forms, soft outlines, calm colors.
-   ============================================================ */
-@theme {
-  /* Fonts (Next/font injects the families under these CSS vars on <html>) */
-  --font-headline: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+  --card: #ffffff;
+  --border: #e4e4e7;
+  --primary: #18181b;
+  /* Geography/Flags theme - calm indigo + silver + accent red for flags */
+  --theme-primary: #1E3A8A; /* deep indigo */
+  --theme-secondary: #64748B; /* slate/silver */
+  --theme-accent: #DC2626; /* flag red */
+  --theme-bg: #F0F9FF; /* light blue */
+  --theme-card: #FFFFFF;
+}
 
-  /* Surfaces */
-  --color-background: #fcf9f5;
-  --color-on-background: #1c1c1a;
-  --color-surface: #fcf9f5;
-  --color-on-surface: #1c1c1a;
-  --color-on-surface-variant: #40484e;
-  --color-surface-dim: #dcdad6;
-  --color-surface-bright: #fcf9f5;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f6f3ef;
-  --color-surface-container: #f0ede9;
-  --color-surface-container-high: #eae8e4;
-  --color-surface-container-highest: #e5e2de;
-  --color-surface-variant: #e5e2de;
-  --color-inverse-surface: #31302e;
-  --color-inverse-on-surface: #f3f0ec;
-  --color-outline: #71787f;
-  --color-outline-variant: #c0c7cf;
-
-  /* Brand Ocean (primary) */
-  --color-primary: #18638b;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #3a7ca5;
-  --color-on-primary-container: #fffeff;
-  --color-primary-fixed: #c8e6ff;
-  --color-primary-fixed-dim: #8fcdfa;
-  --color-on-primary-fixed: #001e2f;
-  --color-on-primary-fixed-variant: #004c6e;
-  --color-inverse-primary: #8fcdfa;
-
-  /* Sage Growth (secondary) */
-  --color-secondary: #476553;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #c6e8d1;
-  --color-on-secondary-container: #4b6957;
-  --color-secondary-fixed: #c9ead4;
-  --color-secondary-fixed-dim: #aeceb8;
-  --color-on-secondary-fixed: #032113;
-  --color-on-secondary-fixed-variant: #304d3c;
-
-  /* Flag Gold (tertiary) */
-  --color-tertiary: #735c00;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #cba72f;
-  --color-on-tertiary-container: #4e3d00;
-  --color-tertiary-fixed: #ffe088;
-  --color-tertiary-fixed-dim: #e9c349;
-  --color-on-tertiary-fixed: #241a00;
-  --color-on-tertiary-fixed-variant: #574500;
-
-  /* Error */
-  --color-error: #ba1a1a;
-  --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
-
-  /* Rounded (pill-shaped, safety metaphor) */
-  --radius-sm: 0.5rem;
-  --radius-DEFAULT: 1rem;
-  --radius-md: 1.5rem;
-  --radius-lg: 2rem;
-  --radius-xl: 3rem;
-
-  /* Spacing rhythm (8px) */
-  --spacing-gutter: 16px;
-  --spacing-stack-gap: 24px;
-  --spacing-container-padding: 24px;
-  --spacing-touch-target-min: 48px;
+.dark {
+  --background: #09090b;
+  --foreground: #ededed;
+  --card: #18181b;
+  --border: #27272a;
+  --primary: #f4f4f5;
+  /* Darker geography theme */
+  --theme-primary: #1E40AF;
+  --theme-secondary: #475569;
+  --theme-accent: #EF4444;
+  --theme-bg: #0F172A;
+  --theme-card: #1E2937;
 }
 
 body {
-  font-family: var(--font-body);
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
-  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-geist-sans);
 }
 
-h1, h2, h3, h4, h5, h6,
-.font-headline {
-  font-family: var(--font-headline);
-  letter-spacing: 0.02em;
-}
-
-/* Material Symbols (icons used by prototype markup) */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  user-select: none;
-}
-
-/* Soft tonal card border (no harsh shadows) */
-.card-soft-border {
-  border: 1px solid rgba(71, 101, 83, 0.12);
-}
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(186, 206, 193, 0.3);
-}
-
-/* Tactile pressed feedback (2px down / scale), no flashing */
-.active-tap:active {
-  transform: scale(0.98);
-  transition: transform 0.1s ease;
-}
-
-/* Cards lift gently on hover */
+/* Nice cards and chat styling */
 .resource-card, .knowledge-card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
+
 .resource-card:hover, .knowledge-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -8px rgba(24, 99, 139, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.1);
 }
 
-/* Chat bubbles */
-.chat-message { max-width: 85%; }
+.chat-message {
+  max-width: 85%;
+}
+
 .ai-message {
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-}
-.user-message {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--card);
+  border: 1px solid var(--border);
 }
 
-/* Calm gold disclaimer (no vibrating red/green) */
+.user-message {
+  background: var(--primary);
+  color: var(--background);
+}
+
 .disclaimer {
-  background: var(--color-tertiary-fixed);
-  border: 2px solid var(--color-tertiary-container);
-  color: var(--color-on-tertiary-container);
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
 }
 
 .location-bar {
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
+  background: white;
+  border: 1px solid var(--border);
 }
 
-/* Slow drifting clouds for the hero */
-.cloud-animation { animation: float 30s infinite linear; }
-@keyframes float {
-  from { transform: translateX(100vw); }
-  to { transform: translateX(-120vw); }
+@media (prefers-color-scheme: dark) {
+  .disclaimer {
+    background: #451a03;
+    border-color: #92400e;
+    color: #fbbf24;
+  }
 }
 
 /* Printable styles for Rehab Program PDF template */
 @media print {
-  body * { visibility: hidden; }
-  .printable-rehab, .printable-rehab * { visibility: visible; }
+  body * {
+    visibility: hidden;
+  }
+  .printable-rehab, .printable-rehab * {
+    visibility: visible;
+  }
   .printable-rehab {
     position: absolute;
     left: 0;
@@ -168,7 +92,9 @@ h1, h2, h3, h4, h5, h6,
     font-size: 11pt;
     line-height: 1.4;
   }
-  .no-print { display: none !important; }
+  .no-print {
+    display: none !important;
+  }
   .activity-card {
     break-inside: avoid;
     page-break-inside: avoid;
