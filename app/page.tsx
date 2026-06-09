@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, MessageCircle, BookOpen, TrendingUp, ClipboardList, AlertTriangle, Send, RefreshCw, Play, Users, Target } from 'lucide-react';
 import { toast } from 'sonner';
-import { resources, globalKnowledge, getResourcesForLocation, defaultLocation, type Resource, type GlobalKnowledge } from '@/lib/data';
+import { resources, globalKnowledge, getResourcesForLocation, defaultLocation, localize, type Resource, type GlobalKnowledge } from '@/lib/data';
 import { rehabActivities, rehabCategories, getActivitiesByCategory, generateDailyPlan, rehabIntro, type RehabActivity } from '@/lib/rehab-program';
 
 // === TYPES ===
@@ -137,6 +137,12 @@ const translations: Record<string, Record<string, string>> = {
     printable_tips: "Советы:",
     printable_desc: "Описание:",
     attach_label: "[Вложение]",
+    lang_spanish: "испанский",
+    lang_catalan: "каталанский",
+    lang_ukrainian: "украинский",
+    lang_russian: "русский",
+    lang_english: "английский",
+    resources_source: "Источник:",
   },
   en: {
     header_title: "ASD Compass AI",
@@ -245,6 +251,12 @@ const translations: Record<string, Record<string, string>> = {
     printable_tips: "Tips:",
     printable_desc: "Description:",
     attach_label: "[Attachment]",
+    lang_spanish: "Spanish",
+    lang_catalan: "Catalan",
+    lang_ukrainian: "Ukrainian",
+    lang_russian: "Russian",
+    lang_english: "English",
+    resources_source: "Source:",
   },
   uk: {
     header_title: "Компас РАС AI",
@@ -353,6 +365,12 @@ const translations: Record<string, Record<string, string>> = {
     printable_tips: "Поради:",
     printable_desc: "Опис:",
     attach_label: "[Вкладення]",
+    lang_spanish: "іспанська",
+    lang_catalan: "каталанська",
+    lang_ukrainian: "українська",
+    lang_russian: "російська",
+    lang_english: "англійська",
+    resources_source: "Джерело:",
   },
   es: {
     header_title: "Compás TEA AI",
@@ -461,6 +479,12 @@ const translations: Record<string, Record<string, string>> = {
     printable_tips: "Consejos:",
     printable_desc: "Descripción:",
     attach_label: "[Adjunto]",
+    lang_spanish: "español",
+    lang_catalan: "catalán",
+    lang_ukrainian: "ucraniano",
+    lang_russian: "ruso",
+    lang_english: "inglés",
+    resources_source: "Fuente:",
   },
 };
 
@@ -604,7 +628,7 @@ export default function AutismAICompanion() {
 
     // Location-specific quick responses
     if (lowerMsg.includes('blanes') || lowerMsg.includes('girona') || lowerMsg.includes('recurso') || lowerMsg.includes('dónde') || lowerMsg.includes('centro')) {
-      const local = filteredResources.slice(0, 3).map(r => `• ${r.title}: ${r.description.substring(0, 120)}... (${r.contact || r.website || 'Ver web'})`).join('\n');
+      const local = filteredResources.slice(0, 3).map(r => `• ${localize(r.title, lang)}: ${localize(r.description, lang).substring(0, 120)}... (${localize(r.contact, lang) || r.website || ''})`).join('\n');
       return `${locContext}${attachContext}Aquí tienes recursos relevantes para tu zona:\n\n${local}\n\nRecomendación fuerte: Contacta **Atención Temprana Girona** a través de tu CAP en Blanes o la web de Salut (salut.gencat.cat). Junts Autisme (juntsautisme.org) ofrece apoyo excelente a familias en Cataluña. Verifica siempre la información actualizada.`;
     }
 
@@ -614,7 +638,7 @@ export default function AutismAICompanion() {
 
     if (lowerMsg.includes('tendencia') || lowerMsg.includes('investigación') || lowerMsg.includes('nuevo') || lowerMsg.includes('esdm') || lowerMsg.includes('aba')) {
       const trend = globalKnowledge.find(k => k.id === 'trends-2026');
-      return `${locContext}${attachContext}${trend?.summary || ''}\n\nEnfoque principal recomendado: Intervención temprana intensiva basada en evidencia (ESDM, enfoques naturalistas + parent coaching). Evita terapias sin respaldo científico fuerte (revisa ASAT). En España, combina con Atención Temprana pública.`;
+      return `${locContext}${attachContext}${localize(trend?.summary, lang)}\n\nEnfoque principal recomendado: Intervención temprana intensiva basada en evidencia (ESDM, enfoques naturalistas + parent coaching). Evita terapias sin respaldo científico fuerte (revisa ASAT). En España, combina con Atención Temprana pública.`;
     }
 
     if (lowerMsg.includes('ucrania') || lowerMsg.includes('refugiado') || lowerMsg.includes('diáspora')) {
@@ -623,7 +647,7 @@ export default function AutismAICompanion() {
 
     // Global evidence-based default
     const ebp = globalKnowledge.find(k => k.id === 'ebp-28');
-    return `${locContext}${attachContext}${ebp?.summary || 'Consulta las 28 prácticas basadas en evidencia de NCAEP (ncaep.fpg.unc.edu) y los módulos AFIRM gratuitos.'}\n\nPregúntame algo más específico sobre tu hijo, rutinas, o recursos en tu nueva ubicación. Puedo adaptar recomendaciones.`;
+    return `${locContext}${attachContext}${localize(ebp?.summary, lang) || 'Consulta las 28 prácticas basadas en evidencia de NCAEP (ncaep.fpg.unc.edu) y los módulos AFIRM gratuitos.'}\n\nPregúntame algo más específico sobre tu hijo, rutinas, o recursos en tu nueva ubicación. Puedo adaptar recomendaciones.`;
   };
 
   // Send message to AI (now supports attachments)
@@ -1097,12 +1121,12 @@ export default function AutismAICompanion() {
               {filteredResources.length > 0 ? filteredResources.map(res => (
                 <div key={res.id} className="resource-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
                   <div className="uppercase text-[10px] tracking-widest text-emerald-600 dark:text-emerald-500 mb-1">{res.type.toUpperCase()} • {res.location}</div>
-                  <h3 className="font-semibold text-lg mb-2">{res.title}</h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{res.description}</p>
-                  {res.contact && <p className="text-xs mb-1"><strong>{t(lang, 'resources_contact')}</strong> {res.contact}</p>}
+                  <h3 className="font-semibold text-lg mb-2">{localize(res.title, lang)}</h3>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{localize(res.description, lang)}</p>
+                  {res.contact && <p className="text-xs mb-1"><strong>{t(lang, 'resources_contact')}</strong> {localize(res.contact, lang)}</p>}
                   {res.website && <a href={res.website} target="_blank" className="text-xs text-blue-600 dark:text-blue-400 hover:underline block mb-1">{res.website}</a>}
-                  {res.notes && <p className="text-xs bg-zinc-100 dark:bg-zinc-950 p-2 rounded mt-2">{res.notes}</p>}
-                  {res.languages && <div className="text-[10px] mt-2 text-zinc-500">{t(lang, 'resources_languages')} {res.languages.join(' • ')}</div>}
+                  {res.notes && <p className="text-xs bg-zinc-100 dark:bg-zinc-950 p-2 rounded mt-2">{localize(res.notes, lang)}</p>}
+                  {res.languages && <div className="text-[10px] mt-2 text-zinc-500">{t(lang, 'resources_languages')} {res.languages.map(lc => t(lang, 'lang_' + lc)).join(' • ')}</div>}
                 </div>
               )) : <p>{t(lang, 'resources_empty')}</p>}
             </div>
@@ -1123,12 +1147,12 @@ export default function AutismAICompanion() {
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="text-xs uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">{item.category}</div>
-                      <h3 className="font-semibold text-lg">{item.title}</h3>
+                      <h3 className="font-semibold text-lg">{localize(item.title, lang)}</h3>
                     </div>
                     {item.link && <a href={item.link} target="_blank" className="text-xs text-blue-600">{t(lang, 'knowledge_source')}</a>}
                   </div>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{item.summary}</p>
-                  <div className="text-[10px] mt-3 text-zinc-500">Источник: {item.source}</div>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{localize(item.summary, lang)}</p>
+                  <div className="text-[10px] mt-3 text-zinc-500">{t(lang, 'resources_source')} {localize(item.source, lang)}</div>
                 </div>
               ))}
             </div>
