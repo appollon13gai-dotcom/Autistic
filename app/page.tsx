@@ -31,8 +31,8 @@ interface TrackerEntry {
 // Simple i18n - default Russian, switchable to EN, UK, ES
 const translations: Record<string, Record<string, string>> = {
   ru: {
-    header_title: "Компас TEA AI",
-    header_subtitle: "Компас по аутизму (TEA) с ИИ • Гибкая локация • Голос + фото",
+    header_title: "NeuralPath TEA AI",
+    header_subtitle: "NeuralPath по аутизму (TEA) с ИИ • Гибкая локация • Голос + фото",
     clear_data: "Очистить данные",
     focused_label: "Фокус: Глобальные лучшие практики + Локальная помощь",
     disclaimer_title: "ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ — ЧИТАЙТЕ КАЖДЫЙ РАЗ",
@@ -145,8 +145,8 @@ const translations: Record<string, Record<string, string>> = {
     resources_source: "Источник:",
   },
   en: {
-    header_title: "ASD Compass AI",
-    header_subtitle: "Autism (ASD) Compass with AI • Flexible location • Voice + photos",
+    header_title: "NeuralPath ASD AI",
+    header_subtitle: "NeuralPath for autism (ASD) with AI • Flexible location • Voice + photos",
     clear_data: "Clear data",
     focused_label: "Focus: Global best practices + Local support",
     disclaimer_title: "IMPORTANT DISCLAIMER — READ EVERY TIME",
@@ -259,8 +259,8 @@ const translations: Record<string, Record<string, string>> = {
     resources_source: "Source:",
   },
   uk: {
-    header_title: "Компас РАС AI",
-    header_subtitle: "Компас по аутизму (РАС) з ШІ • Гнучка локація • Голос + фото",
+    header_title: "NeuralPath РАС AI",
+    header_subtitle: "NeuralPath по аутизму (РАС) з ШІ • Гнучка локація • Голос + фото",
     clear_data: "Очистити дані",
     focused_label: "Фокус: Глобальні найкращі практики + Місцева допомога",
     disclaimer_title: "ВАЖЛИВЕ ПОПЕРЕДЖЕННЯ — ЧИТАЙТЕ КОЖНОГО РАЗУ",
@@ -373,8 +373,8 @@ const translations: Record<string, Record<string, string>> = {
     resources_source: "Джерело:",
   },
   es: {
-    header_title: "Compás TEA AI",
-    header_subtitle: "Brújula TEA con IA • Ubicación flexible • Voz + fotos",
+    header_title: "NeuralPath TEA AI",
+    header_subtitle: "NeuralPath TEA con IA • Ubicación flexible • Voz + fotos",
     clear_data: "Borrar datos",
     focused_label: "Enfoque: Mejores prácticas globales + Apoyo local",
     disclaimer_title: "AVISO IMPORTANTE — LÉELO CADA VEZ QUE USES LA APP",
